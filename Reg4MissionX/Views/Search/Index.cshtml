@@ -1,0 +1,39 @@
+﻿@{
+    ViewData["Title"] = "Search";
+}
+
+<div class="container py-4">
+    <h1 class="mb-3">Sök efter kandidater</h1>
+
+    <form class="row g-3">
+        <div class="col-md-6">
+            <label class="form-label">Kommun</label>
+            <select class="form-select">
+                <option selected>Gör ett val</option>
+                <option>Stockholm</option>
+                <option>Göteborg</option>
+                <option>Malmö</option>
+            </select>
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label">Uppdrag</label>
+            <select class="form-select">
+                <option selected>Gör ett val</option>
+                <option>Kontaktperson</option>
+                <option>Ledsagare</option>
+                <option>Avlösare</option>
+            </select>
+        </div>
+
+        <div class="col-12">
+            <button type="button" class="btn btn-primary">Sök</button>
+        </div>
+    </form>
+
+    <hr class="my-4" />
+
+    <div class="text-muted">
+        Result visas här.
+    </div>
+</div>
