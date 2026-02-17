@@ -22,6 +22,8 @@ namespace Reg4MissionX.ViewModels
         [Required(ErrorMessage = "Fyll i lösenord.")]
         [DataType(DataType.Password)]
         [MinLength(8, ErrorMessage = "Lösenordet måste vara minst 8 tecken.")]
+        [RegularExpression(@"^(?=.*[^\w\s]).{8,}$",
+        ErrorMessage = "Lösenordet måste innehålla minst 1 specialtecken (t.ex. ! ? # %).")]
         [Display(Name = "Lösenord")]
         public string Password { get; set; } = "";
 
