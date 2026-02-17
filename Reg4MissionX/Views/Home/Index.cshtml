@@ -1,8 +1,103 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Start";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container py-4 py-lg-5">
+    <div class="row g-4 align-items-start">
+        <!-- LEFT: Info -->
+        <div class="col-lg-7">
+            <div class="mb-4">
+                <h1 class="display-6 fw-semibold mb-2">Reg4MissionX</h1>
+                <p class="lead text-muted mb-0">
+                    En plattform för att matcha uppdragstagare med kommunala behov.
+                </p>
+            </div>
+
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title mb-2">För kommuner</h5>
+                            <p class="text-muted mb-0">
+                                Sök och kontakta uppdragstagare baserat på län, kommun och avdelning.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title mb-2">För privatpersoner</h5>
+                            <p class="text-muted mb-0">
+                                Registrera dig för att kunna ta uppdrag i valda kommuner och avdelningar.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- RIGHT: Login box -->
+        <div class="col-lg-5">
+            <div class="card shadow-sm sticky-lg-top login-card">
+                <div class="card-body p-4">
+                    <h4 class="mb-1">Logga in</h4>
+                    <p class="text-muted mb-3">För kommuner och registrerade användare</p>
+
+                    <!-- Om det finns Account/Login endpoint senare: ändra action/asp-controller -->
+                    <form method="post" action="/Account/Login" class="needs-validation" novalidate>
+                        <div class="mb-3">
+                            <label class="form-label">Mailadress</label>
+                            <input class="form-control" type="email" name="Email" autocomplete="username" required placeholder="namn@kommun.se" />
+                            <div class="invalid-feedback">Fyll i en giltig mailadress.</div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Lösenord</label>
+                            <input class="form-control" type="password" name="Password" autocomplete="current-password" required />
+                            <div class="invalid-feedback">Fyll i lösenord.</div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-primary" type="submit">Logga in</button>
+
+                            <!-- Registrera-länk -->
+                            <a class="btn btn-outline-secondary"
+                               asp-controller="Account" asp-action="Register">
+                                Registrera dig som privatperson
+                            </a>
+                        </div>
+
+                        <div class="mt-3 small">
+                            <a class="link-secondary" href="#">Glömt lösenord?</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="mt-3 text-muted small">
+                Tips: använd arbetsmail. Inloggning är kopplad till mailadress.
+            </div>
+        </div>
+    </div>
 </div>
+
+@section Scripts {
+    <script>
+        // Bootstrap validation (UI-only)
+        (function () {
+            const forms = document.querySelectorAll('.needs-validation');
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
+    </script>
+}
