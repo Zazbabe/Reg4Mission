@@ -38,12 +38,12 @@
                         <span asp-validation-for="PhoneNumber" class="text-danger"></span>
                     </div>
 
-                    <div class="col-md-6">
-                        <label asp-for="Password" class="form-label"></label>
-                        <input asp-for="Password" class="form-control" autocomplete="new-password" />
-                        <div class="form-text">Minst 8 tecken.</div>
-                        <span asp-validation-for="Password" class="text-danger"></span>
-                    </div>
+                <div class="col-md-6">
+                 <label asp-for="Password" class="form-label"></label>
+                <input asp-for="Password" class="form-control" autocomplete="new-password" />
+                        <div class="form-text">Minst 8 tecken och minst 1 specialtecken (t.ex. ! ? # %).</div>
+                <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
 
                     <div class="col-md-6">
                         <label asp-for="ConfirmPassword" class="form-label"></label>
