@@ -1,0 +1,110 @@
+﻿@{
+    ViewData["Title"] = "Min profil";
+}
+
+<div class="container py-4" style="max-width: 900px;" data-requires-auth="true">
+    <h1 class="mb-2">Min profil</h1>
+    <p class="text-muted mb-4">UI-only: sparas inte i databasen än.</p>
+
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Profilbild</h5>
+
+                    <div class="ratio ratio-1x1 bg-light rounded overflow-hidden mb-3">
+                        <img id="profilePreview" alt="Profilbild" style="object-fit:cover; width:100%; height:100%; display:none;" />
+                        <div id="profilePlaceholder" class="d-flex align-items-center justify-content-center text-muted">
+                            Ingen bild vald
+                        </div>
+                    </div>
+
+                    <label class="form-label">Ladda upp bild</label>
+                    <input class="form-control" type="file" id="profileImageInput" accept="image/*" />
+
+                    <div class="form-text mt-2">
+                        Endast UI nu. Backend kommer senare spara bilden.
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <form class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Uppgifter</h5>
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Namn</label>
+                            <input class="form-control" placeholder="För- och efternamn" />
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Mailadress</label>
+                            <input class="form-control" type="email" placeholder="namn@exempel.se" />
+                            <div class="form-text">
+                                Om email används som inloggning kan den låsas senare - men UI-mässigt visar jag fältet nu.
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label">Telefonnummer</label>
+                            <input class="form-control" placeholder="+46 70 123 45 67" />
+                            <div class="form-text">Viktigt att kunna uppdatera vid nummerbyte.</div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label">Ålder</label>
+                            <input class="form-control" type="number" min="0" max="120" placeholder="t.ex. 32" />
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label">Kön</label>
+                            <select class="form-select">
+                                <option value="">Välj…</option>
+                                <option>Kvinna</option>
+                                <option>Man</option>
+                                <option>Icke-binär</option>
+                                <option>Vill ej ange</option>
+                            </select>
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label">Intressen</label>
+                            <textarea class="form-control" rows="3" placeholder="Skriv kort…"></textarea>
+                        </div>
+                    </div>
+
+                    <hr class="my-4" />
+
+                    <button type="button" class="btn btn-primary" disabled>Spara (kommer senare)</button>
+                    <span class="text-muted small ms-2">UI-only</span>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Bild-preview (UI-only)
+        (function () {
+            const input = document.getElementById('profileImageInput');
+            const img = document.getElementById('profilePreview');
+            const placeholder = document.getElementById('profilePlaceholder');
+
+            if (!input) return;
+
+            input.addEventListener('change', () => {
+                const file = input.files && input.files[0];
+                if (!file) return;
+
+                const url = URL.createObjectURL(file);
+                img.src = url;
+                img.style.display = 'block';
+                placeholder.style.display = 'none';
+            });
+        })();
+    </script>
+}

@@ -11,12 +11,6 @@
 </head>
 
 <body class="bg-light">
-    @{
-        // UI-only tills backend är klart.
-        // Sen kan backend sätta ViewBag.IsLoggedIn = true/false på sidor.
-        bool isLoggedIn = (ViewBag.IsLoggedIn as bool?) ?? false;
-    }
-
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom shadow-sm">
             <div class="container">
@@ -32,48 +26,47 @@
                 <div class="collapse navbar-collapse" id="mainNav">
                     <!-- Vänster meny -->
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="nav-item">
+                        <li class="nav-item" id="navHome">
                             <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
 
-                        <li class="nav-item">
+                        <li class="nav-item" id="navPrivacy">
                             <a class="nav-link" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
 
+                        <!-- Utloggat-läge -->
+                        <li class="nav-item" id="navRegister">
+                            <a class="nav-link" asp-controller="Account" asp-action="Register" id="registerLink">Registrera</a>
+                        </li>
 
-                        @* Sök ska bara finnas när man är inloggad *@
-                        @if (isLoggedIn)
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="Search" asp-action="Index">Sök</a>
-                            </li>
-                        }
+                        <!-- Inloggat-läge (döljs av default, JS visar när "loggedIn" finns) -->
+                        <li class="nav-item d-none" id="navDashboard">
+                            <a class="nav-link" asp-controller="Dashboard" asp-action="Index">Välkommen</a>
+                        </li>
+
+                        <li class="nav-item d-none" id="navSearch">
+                            <a class="nav-link" asp-controller="Search" asp-action="Index">Sök</a>
+                        </li>
+
+                        <li class="nav-item d-none" id="navProfile">
+                            <a class="nav-link" asp-controller="Profile" asp-action="Index">Profil</a>
+                        </li>
                     </ul>
 
                     <!-- Höger meny -->
                     <ul class="navbar-nav ms-auto">
-                        @if (!isLoggedIn)
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link" asp-controller="Account" asp-action="Login">Login</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="btn btn-sm btn-primary ms-lg-2" asp-controller="Account" asp-action="Register">
-                                    Registrera
-                                </a>
-                            </li>
-                        }
-                        else
-                        {
-                            <li class="nav-item">
-                                <span class="navbar-text me-2 text-muted small">Inloggad</span>
-                            </li>
-                            <li class="nav-item">
-                                <a class="btn btn-sm btn-outline-secondary" asp-controller="Account" asp-action="Logout">
-                                    Logga ut
-                                </a>
-                            </li>
-                        }
+                        <!-- Utloggat: Login ska hoppa till login-boxen på startsidan -->
+                        <li class="nav-item" id="navLogin">
+                            <!-- viktigt: använd asp-länk till Home/Index + #login -->
+                            <a class="nav-link" asp-controller="Home" asp-action="Index" asp-fragment="login" id="loginNavLink">
+                                Login
+                            </a>
+                        </li>
+
+                        <!-- Inloggat: Logga ut (UI-only via JS) -->
+                        <li class="nav-item d-none" id="navLogout">
+                            <a class="nav-link" href="#" id="logoutLink">Logga ut</a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -82,7 +75,6 @@
 
     <!-- Page content -->
     <div class="container py-4">
-        @* Plats för flash-meddelanden senare (TempData) *@
         @if (TempData["Success"] is string success)
         {
             <div class="alert alert-success">@success</div>
