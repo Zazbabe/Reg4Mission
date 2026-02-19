@@ -1,0 +1,393 @@
+﻿@model Reg4MissionX.ViewModels.RegisterVm
+
+@{
+    ViewData["Title"] = "Registrera";
+}
+
+<div class="container py-4" style="max-width: 860px;">
+    <div class="mb-4">
+        <h1 class="mb-1">Registrera</h1>
+        <p class="text-muted mb-0">Skapa konto som privatperson.</p>
+    </div>
+
+    <form method="post" class="needs-validation" novalidate>
+        <!-- kommer synas när backend kopplas på -->
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+        <div class="card shadow-sm mb-4">
+            <div class="card-body">
+                <h5 class="card-title mb-3">Uppgifter</h5>
+
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label asp-for="FullName" class="form-label"></label>
+                        <input asp-for="FullName" class="form-control" placeholder="För- och efternamn" />
+                        <span asp-validation-for="FullName" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="Email" class="form-label"></label>
+                        <input asp-for="Email" class="form-control" placeholder="namn@exempel.se" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="PhoneNumber" class="form-label"></label>
+                        <input asp-for="PhoneNumber" class="form-control" placeholder="+46 70 123 45 67" />
+                        <div class="form-text">Telefonnumret visas endast för behöriga kommun-användare.</div>
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
+
+                <div class="col-md-6">
+                 <label asp-for="Password" class="form-label"></label>
+                <input asp-for="Password" class="form-control" autocomplete="new-password" />
+                        <div class="form-text">Minst 8 tecken och minst 1 specialtecken (t.ex. ! ? # %).</div>
+                <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="ConfirmPassword" class="form-label"></label>
+                        <input asp-for="ConfirmPassword" class="form-control" autocomplete="new-password" />
+                        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <hr class="my-4" />
+
+                <h6 class="fw-semibold mb-2">Uppgifter (privatperson)</h6>
+
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label asp-for="Age" class="form-label"></label>
+                        <input asp-for="Age" class="form-control" type="number" min="0" max="120" placeholder="t.ex. 32" />
+                        <span asp-validation-for="Age" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label asp-for="Gender" class="form-label"></label>
+                        <select asp-for="Gender" class="form-select">
+                            <option value="">Välj…</option>
+                            <option value="Kvinna">Kvinna</option>
+                            <option value="Man">Man</option>
+                            <option value="Icke-binär">Icke-binär</option>
+                            <option value="Vill ej ange">Vill ej ange</option>
+                        </select>
+                        <span asp-validation-for="Gender" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <hr class="my-4" />
+
+                <h6 class="fw-semibold mb-2">Var vill du ta uppdrag?</h6>
+
+                <div class="row g-3 align-items-end">
+                    <div class="col-md-6">
+                        <label asp-for="CountyCode" class="form-label"></label>
+                        <select asp-for="CountyCode" class="form-select" id="countySelect">
+                            <option value="">Laddar län…</option>
+                        </select>
+                        <span asp-validation-for="CountyCode" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="form-label">Sök kommun</label>
+                        <input class="form-control" id="municipalitySearch" placeholder="Skriv för att filtrera…" disabled />
+                    </div>
+                </div>
+
+                <div class="mt-3 border rounded p-3" style="max-height: 260px; overflow:auto;" id="municipalityList">
+                    <div class="text-muted">Välj ett län för att se kommuner.</div>
+                </div>
+
+                <!-- Valideringsfel för listan (MunicipalityCodes) -->
+                <span asp-validation-for="MunicipalityCodes" class="text-danger"></span>
+
+                <div class="form-text mt-2">
+                    Klicka i alla kommuner du vill kunna ta uppdrag i. (Du kan välja i flera län.)
+                </div>
+
+                <!-- NYTT: Valda kommuner (för multi-län-översikt) -->
+                <div class="mt-3">
+                    <h6 class="fw-semibold mb-2">Valda kommuner</h6>
+                    <div id="selectedMunicipalities" class="border rounded p-3 bg-light">
+                        <div class="text-muted">Inga valda kommuner ännu.</div>
+                    </div>
+                </div>
+
+                <hr class="my-4" />
+
+                <h6 class="fw-semibold mb-2">Avdelning</h6>
+
+                <div class="row g-2">
+                    <div class="col-md-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="Departments" value="LSS" id="depLss"
+                                   @(Model?.Departments?.Contains("LSS") == true ? "checked" : "") />
+                            <label class="form-check-label" for="depLss">LSS</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="Departments" value="SoL" id="depSol"
+                                   @(Model?.Departments?.Contains("SoL") == true ? "checked" : "") />
+                            <label class="form-check-label" for="depSol">SoL</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="Departments" value="Socialtjansten" id="depSocial"
+                                   @(Model?.Departments?.Contains("Socialtjansten") == true ? "checked" : "") />
+                            <label class="form-check-label" for="depSocial">Socialtjänsten</label>
+                        </div>
+                    </div>
+                </div>
+
+                <span asp-validation-for="Departments" class="text-danger"></span>
+
+                <hr class="my-4" />
+
+                <div class="form-check">
+                    <input asp-for="AcceptGdpr" class="form-check-input" id="gdprCheck" />
+                    <label class="form-check-label" for="gdprCheck">
+                        Jag har läst och godkänner
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#gdprModal">GDPR-informationen</a>
+                        <span class="text-danger">*</span>
+                    </label>
+                </div>
+                <span asp-validation-for="AcceptGdpr" class="text-danger"></span>
+
+            </div>
+        </div>
+
+        <div class="d-flex gap-2">
+            <button class="btn btn-primary" type="submit">Skapa konto</button>
+            <a class="btn btn-outline-secondary" asp-controller="Home" asp-action="Index">Avbryt</a>
+        </div>
+    </form>
+</div>
+
+<!-- GDPR Modal -->
+<div class="modal fade" id="gdprModal" tabindex="-1" aria-labelledby="gdprModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="gdprModalLabel">GDPR-information</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Stäng"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-muted">
+                    (UI-placeholder) Lägg GDPR-text här: vilka uppgifter vi lagrar, varför, vem som kan se dem,
+                    hur export och radering fungerar osv.
+                </p>
+                <hr />
+                <ul>
+                    <li>Ändamål: matcha uppdragstagare med kommuner</li>
+                    <li>Uppgifter: namn, mail, telefon, kommunval, avdelning</li>
+                    <li>Åtkomst: kommuner med inloggning kan se kontaktuppgifter</li>
+                    <li>Rättigheter: export och radering</li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Stäng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        // Bootstrap validation (UI-only)
+        (function () {
+            const forms = document.querySelectorAll('.needs-validation');
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    const pwd = document.getElementById('Password');
+                    const cpwd = document.getElementById('ConfirmPassword');
+
+                    // password match check (UI)
+                    if (pwd && cpwd && pwd.value !== cpwd.value) {
+                        cpwd.setCustomValidity("Lösenorden matchar inte");
+                    } else if (cpwd) {
+                        cpwd.setCustomValidity("");
+                    }
+
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
+
+        // Multi-län + alfabetisk sort + "Valda kommuner"
+        (function () {
+            const countySelect = document.getElementById('countySelect');
+            const municipalityList = document.getElementById('municipalityList');
+            const municipalitySearch = document.getElementById('municipalitySearch');
+            const selectedBox = document.getElementById('selectedMunicipalities');
+
+            let dataset = null;
+            let currentMunicipalities = [];
+
+            // Sparar val över flera län: code -> { code, name, countyCode, countyName }
+            const selected = new Map();
+
+            function sortByName(a, b) {
+                return a.name.localeCompare(b.name, 'sv');
+            }
+
+            function renderSelectedBox() {
+                const items = Array.from(selected.values())
+                    .sort((a, b) => a.name.localeCompare(b.name, 'sv'));
+
+                if (items.length === 0) {
+                    selectedBox.innerHTML = `<div class="text-muted">Inga valda kommuner ännu.</div>`;
+                    return;
+                }
+
+                selectedBox.innerHTML = items.map(x => `
+                    <span class="badge rounded-pill text-bg-primary me-1 mb-1">
+                        ${x.name}
+                        <button type="button"
+                                class="btn btn-sm btn-link text-white p-0 ms-2 align-baseline"
+                                data-remove="${x.code}"
+                                aria-label="Ta bort ${x.name}"
+                                style="text-decoration:none;">✕</button>
+                    </span>
+                `).join('');
+            }
+
+            selectedBox.addEventListener('click', (e) => {
+                const btn = e.target.closest('[data-remove]');
+                if (!btn) return;
+
+                const code = btn.getAttribute('data-remove');
+                selected.delete(code);
+
+                // Om checkboxen syns just nu, avmarkera den också
+                const cb = document.getElementById(`mun_${code}`);
+                if (cb) cb.checked = false;
+
+                renderSelectedBox();
+            });
+
+            function wireCheckboxEvents() {
+                municipalityList
+                    .querySelectorAll('input[type="checkbox"][name="MunicipalityCodes"]')
+                    .forEach(cb => {
+                        cb.addEventListener('change', () => {
+                            const code = cb.value;
+                            const mun = currentMunicipalities.find(x => x.code === code);
+
+                            if (cb.checked) {
+                                const county = dataset?.counties?.find(c => c.code === countySelect.value);
+                                selected.set(code, {
+                                    code,
+                                    name: mun?.name ?? code,
+                                    countyCode: county?.code ?? "",
+                                    countyName: county?.name ?? ""
+                                });
+                            } else {
+                                selected.delete(code);
+                            }
+
+                            renderSelectedBox();
+                        });
+                    });
+            }
+
+            function renderMunicipalities(items) {
+                municipalityList.innerHTML = "";
+                if (!items || items.length === 0) {
+                    municipalityList.innerHTML = `<div class="text-muted">Inga kommuner att visa.</div>`;
+                    return;
+                }
+
+                const fragment = document.createDocumentFragment();
+                const sorted = [...items].sort(sortByName);
+
+                sorted.forEach(m => {
+                    const id = `mun_${m.code}`;
+                    const div = document.createElement('div');
+                    div.className = "form-check";
+
+                    const checked = selected.has(m.code) ? "checked" : "";
+
+                    div.innerHTML = `
+                        <input class="form-check-input"
+                               type="checkbox"
+                               name="MunicipalityCodes"
+                               value="${m.code}"
+                               id="${id}" ${checked}>
+                        <label class="form-check-label" for="${id}">${m.name}</label>
+                    `;
+
+                    fragment.appendChild(div);
+                });
+
+                municipalityList.appendChild(fragment);
+                wireCheckboxEvents();
+            }
+
+            function applySearchFilter() {
+                const q = (municipalitySearch.value || "").trim().toLowerCase();
+                if (!q) {
+                    renderMunicipalities(currentMunicipalities);
+                    return;
+                }
+                const filtered = currentMunicipalities.filter(m => m.name.toLowerCase().includes(q));
+                renderMunicipalities(filtered);
+            }
+
+            fetch('/data/sweden_counties_municipalities_2026.json')
+                .then(r => r.json())
+                .then(json => {
+                    dataset = json;
+
+                    // sortera län alfabetiskt
+                    const countiesSorted = [...json.counties].sort((a, b) => a.name.localeCompare(b.name, 'sv'));
+
+                    countySelect.innerHTML = `<option value="">Välj län…</option>`;
+                    countiesSorted.forEach(c => {
+                        const opt = document.createElement('option');
+                        opt.value = c.code;
+                        opt.textContent = c.name;
+                        countySelect.appendChild(opt);
+                    });
+
+                    municipalitySearch.disabled = true;
+                    municipalitySearch.value = "";
+                    municipalityList.innerHTML = `<div class="text-muted">Välj ett län för att se kommuner.</div>`;
+                    renderSelectedBox();
+                })
+                .catch(() => {
+                    countySelect.innerHTML = `<option value="">Kunde inte ladda län/kommuner</option>`;
+                    municipalityList.innerHTML = `<div class="text-danger">Kunde inte ladda kommun-listan. Kontrollera JSON i wwwroot/data.</div>`;
+                });
+
+            countySelect.addEventListener('change', () => {
+                municipalitySearch.value = "";
+                const code = countySelect.value;
+
+                if (!dataset || !code) {
+                    municipalitySearch.disabled = true;
+                    municipalityList.innerHTML = `<div class="text-muted">Välj ett län för att se kommuner.</div>`;
+                    return;
+                }
+
+                const county = dataset.counties.find(c => c.code === code);
+                currentMunicipalities = county ? county.municipalities : [];
+                municipalitySearch.disabled = false;
+
+                renderMunicipalities(currentMunicipalities);
+            });
+
+            municipalitySearch.addEventListener('input', applySearchFilter);
+        })();
+    </script>
+}

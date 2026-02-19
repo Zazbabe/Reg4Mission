@@ -1,0 +1,30 @@
+﻿@{
+    ViewData["Title"] = "Välkommen";
+}
+
+<div class="container py-4" data-requires-auth="true">
+    <h1 class="mb-2">Välkommen!</h1>
+    <p class="text-muted mb-4">Du är nu i “inloggat läge” (UI-only).</p>
+
+    <div class="row g-3">
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Sök</h5>
+                    <p class="text-muted mb-3">Sök i registret (kommer när backend är klar).</p>
+                    <a class="btn btn-primary" asp-controller="Search" asp-action="Index">Gå till Sök</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Min profil</h5>
+                    <p class="text-muted mb-3">Uppdatera telefon, email och profilbild (UI-only).</p>
+                    <a class="btn btn-outline-secondary" asp-controller="Profile" asp-action="Index">Gå till Profil</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
