@@ -1,0 +1,57 @@
+﻿@{
+    var candidateId = (int)(ViewBag.CandidateId ?? 0);
+}
+
+<div class="modal fade" id="candidateModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">Candidate Profile (ID: @candidateId)</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="row g-3">
+                    <div class="col-12 col-md-7">
+                        <h6>Profile</h6>
+                        <p class="text-muted">
+                            UI-only placeholder. Later this will show real candidate info.
+                        </p>
+
+                        <h6 class="mt-3">Intressen</h6>
+                        <div class="text-muted">Placeholder interests list…</div>
+                    </div>
+
+                    <div class="col-12 col-md-5">
+                        <div class="border rounded p-3 bg-light">
+                            <h6 class="mb-2">Contact info</h6>
+
+                            <!-- Always hidden until reveal -->
+                            <div id="contactArea">
+                                <p class="text-muted small mb-2">
+                                    Contact info is hidden. Click to reveal (this click will be tracked later).
+                                </p>
+
+                                <form id="revealForm">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="candidateId" value="@candidateId" />
+
+                                    <button class="btn btn-primary w-100" type="submit">
+                                        Show contact info
+                                    </button>
+                                </form>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
