@@ -1,0 +1,135 @@
+﻿@{
+    ViewData["Title"] = "Municipality Search";
+}
+
+<div class="container py-4">
+    <div class="row g-3">
+        <!-- Filters -->
+        <div class="col-12 col-lg-3">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Filtrera Kandidater</h5>
+
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label">Roll</label>
+                            <input class="form-control" placeholder="e.g. Kontaktperson" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Ort</label>
+                            <input class="form-control" placeholder="e.g. Uppsala" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Intressen</label>
+                            <input class="form-control" placeholder="e.g. Film" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Availability</label>
+                            <select class="form-select">
+                                <option selected>Any</option>
+                                <option>Omgående</option>
+                                <option>2 veckor</option>
+                                <option>1 månad</option>
+                            </select>
+                        </div>
+
+                        <div class="d-flex gap-2">
+                            <button type="button" class="btn btn-primary w-100">Sök</button>
+                            <button type="button" class="btn btn-outline-secondary w-100">Rensa</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Results -->
+        <div class="col-12 col-lg-9">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h5 class="card-title m-0">Results</h5>
+                        <small class="text-muted">UI-only demo data</small>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Namn</th>
+                                    <th>Roll</th>
+                                    <th>Ort</th>
+                                    <th>Availability</th>
+                                    <th class="text-end">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <div class="fw-semibold">Alex Andersson</div>
+                                        <div class="text-muted small">Äldreomsorg, Frimärken</div>
+                                    </td>
+                                    <td>Ledsagare</td>
+                                    <td>Uppsala</td>
+                                    <td><span class="badge bg-secondary">Omgående</span></td>
+                                    <td class="text-end">
+                                        <button class="btn btn-sm btn-outline-primary js-view-profile"
+                                                type="button"
+                                                data-candidate-id="1">
+                                            View profile
+                                        </button>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <div class="fw-semibold">Sam Nilsson</div>
+                                        <div class="text-muted small">Pizza, Bio, Pussel</div>
+                                    </td>
+                                    <td>Kontaktperson</td>
+                                    <td>Örebro</td>
+                                    <td><span class="badge bg-secondary">2 veckor</span></td>
+                                    <td class="text-end">
+                                        <button class="btn btn-sm btn-outline-primary js-view-profile"
+                                                type="button"
+                                                data-candidate-id="2">
+                                            View profile
+                                        </button>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td>
+                                        <div class="fw-semibold">Kim Svensson</div>
+                                        <div class="text-muted small">Matematik, Film</div>
+                                    </td>
+                                    <td>Kontaktperson</td>
+                                    <td>Västerås</td>
+                                    <td><span class="badge bg-secondary">1 månad</span></td>
+                                    <td class="text-end">
+                                        <button class="btn btn-sm btn-outline-primary js-view-profile"
+                                                type="button"
+                                                data-candidate-id="3">
+                                            View profile
+                                        </button>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+
+            <div id="modalHost"></div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/municipality-search.js"></script>
+}
