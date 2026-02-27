@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Reg4MissionX.ViewModels;
-using System.Data;
 
 namespace Reg4MissionX.Controllers
 {
@@ -11,6 +10,7 @@ namespace Reg4MissionX.Controllers
     {
         //Object created for Creating new role in Identity
         private readonly RoleManager<IdentityRole> _roleManager;
+
         //Object created for Adding user to role in Identity
         private readonly UserManager<IdentityUser> _userManager;
 
@@ -21,6 +21,7 @@ namespace Reg4MissionX.Controllers
             _roleManager = roleManager;
             _userManager = userManager;
         }
+
         public IActionResult Index()
         {
             return View();
@@ -39,17 +40,22 @@ namespace Reg4MissionX.Controllers
                 return NotFound();
 
             //Get all roles från the database and add them to the variable allRoles. Get the roles for the user and add them to the variable userRoles.
+            // NOTE: role.Name is string? so we filter null/empty to avoid CS8619 warnings.
             var allRoles = _roleManager.Roles
                 .Select(role => role.Name)
-                .OrderBy(role => role)
+                .Where(name => !string.IsNullOrWhiteSpace(name))
+                .Select(name => name!) // now it's List<string>
+                .OrderBy(name => name)
                 .ToList();
+
             var userRoles = await _userManager.GetRolesAsync(user);
 
             //Create a new instance of the ManageUserRolesVm class and populate it with the user information, current roles, and available roles. Then return the view with the model.
             var model = new ManageUserRolesVm
             {
                 UserId = user.Id,
-                UserEmail = user.Email,
+                // NOTE: Email is nullable, so fallback to UserName (or empty) to avoid CS8601 warning.
+                UserEmail = user.Email ?? user.UserName ?? "",
                 CurrentRoles = userRoles.ToList(),
                 AvailableRoles = allRoles
             };
@@ -65,6 +71,7 @@ namespace Reg4MissionX.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateRoles(CreateRolesVm model)
         {
             if (!ModelState.IsValid)
@@ -74,6 +81,8 @@ namespace Reg4MissionX.Controllers
             var roles = model.Roles
                 .Split(',', StringSplitOptions.RemoveEmptyEntries)
                 .Select(role => role.Trim())
+                .Where(role => !string.IsNullOrWhiteSpace(role))
+                .Distinct(StringComparer.OrdinalIgnoreCase)
                 .ToList();
 
             foreach (var roleName in roles)
@@ -83,6 +92,7 @@ namespace Reg4MissionX.Controllers
                     await _roleManager.CreateAsync(new IdentityRole(roleName));
                 }
             }
+
             TempData["Success"] = "Roller uppdaterade";
 
             return RedirectToAction(nameof(Index));
@@ -90,15 +100,25 @@ namespace Reg4MissionX.Controllers
 
         //Action method to add a user to one or more roles
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddUserToRoles(ManageUserRolesVm model)
         {
             if (!ModelState.IsValid)
             {
-                model.AvailableRoles = _roleManager.Roles.Select(role => role.Name).ToList();
-                return View(model);
+                // Reload AvailableRoles so the view can render checkboxes again after validation errors.
+                model.AvailableRoles = _roleManager.Roles
+                    .Select(role => role.Name)
+                    .Where(name => !string.IsNullOrWhiteSpace(name))
+                    .Select(name => name!)
+                    .OrderBy(name => name)
+                    .ToList();
+
+                // Important: return the same view used by GetRoles
+                return View("GetRoles", model);
             }
 
-            //Checks if the CurrentRoles property of the model is null and if it is, it initializes it as an empty list of strings. This ensures that the code can safely work with the CurrentRoles property.
+            //Checks if the CurrentRoles property of the model is null and if it is, it initializes it as an empty list of strings.
+            //This ensures that the code can safely work with the CurrentRoles property.
             model.CurrentRoles ??= new List<string>();
 
             //Finds the user by Id and adds the Id to the variable User
@@ -108,7 +128,7 @@ namespace Reg4MissionX.Controllers
                 return NotFound();
             }
 
-            //An attribute to store the current roles of the user in the variable currentRoles. The first in the local and the second is from the model. 
+            //An attribute to store the current roles of the user in the variable currentRoles. The first in the local and the second is from the model.
             var currentRoles = await _userManager.GetRolesAsync(user);
 
             //Attributes to store the roles to be added and removed.
