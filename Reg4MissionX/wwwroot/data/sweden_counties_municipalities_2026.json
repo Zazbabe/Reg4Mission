@@ -1,0 +1,1298 @@
+﻿{
+  "source": {
+    "publisher": "Statistics Sweden (SCB)",
+    "title": "Län och kommuner 2026 i kodnummerordning",
+    "url": "https://www.scb.se/hitta-statistik/regional-statistik-och-kartor/regionala-indelningar/lan-och-kommuner/lan-och-kommuner-i-kodnummerordning/",
+    "file": "https://www.scb.se/contentassets/7a89e48960f741e08918e489ea36354a/kommunlankod-2026.xlsx"
+  },
+  "country": "Sweden",
+  "year": 2026,
+  "counties": [
+    {
+      "code": "01",
+      "name": "Stockholms län",
+      "municipalities": [
+        {
+          "code": "0114",
+          "name": "Upplands Väsby"
+        },
+        {
+          "code": "0115",
+          "name": "Vallentuna"
+        },
+        {
+          "code": "0117",
+          "name": "Österåker"
+        },
+        {
+          "code": "0120",
+          "name": "Värmdö"
+        },
+        {
+          "code": "0123",
+          "name": "Järfälla"
+        },
+        {
+          "code": "0125",
+          "name": "Ekerö"
+        },
+        {
+          "code": "0126",
+          "name": "Huddinge"
+        },
+        {
+          "code": "0127",
+          "name": "Botkyrka"
+        },
+        {
+          "code": "0128",
+          "name": "Salem"
+        },
+        {
+          "code": "0136",
+          "name": "Haninge"
+        },
+        {
+          "code": "0138",
+          "name": "Tyresö"
+        },
+        {
+          "code": "0139",
+          "name": "Upplands-Bro"
+        },
+        {
+          "code": "0140",
+          "name": "Nykvarn"
+        },
+        {
+          "code": "0160",
+          "name": "Täby"
+        },
+        {
+          "code": "0162",
+          "name": "Danderyd"
+        },
+        {
+          "code": "0163",
+          "name": "Sollentuna"
+        },
+        {
+          "code": "0180",
+          "name": "Stockholm"
+        },
+        {
+          "code": "0181",
+          "name": "Södertälje"
+        },
+        {
+          "code": "0182",
+          "name": "Nacka"
+        },
+        {
+          "code": "0183",
+          "name": "Sundbyberg"
+        },
+        {
+          "code": "0184",
+          "name": "Solna"
+        },
+        {
+          "code": "0186",
+          "name": "Lidingö"
+        },
+        {
+          "code": "0187",
+          "name": "Vaxholm"
+        },
+        {
+          "code": "0188",
+          "name": "Norrtälje"
+        },
+        {
+          "code": "0191",
+          "name": "Sigtuna"
+        },
+        {
+          "code": "0192",
+          "name": "Nynäshamn"
+        }
+      ]
+    },
+    {
+      "code": "03",
+      "name": "Uppsala län",
+      "municipalities": [
+        {
+          "code": "0305",
+          "name": "Håbo"
+        },
+        {
+          "code": "0319",
+          "name": "Älvkarleby"
+        },
+        {
+          "code": "0330",
+          "name": "Knivsta"
+        },
+        {
+          "code": "0331",
+          "name": "Heby"
+        },
+        {
+          "code": "0360",
+          "name": "Tierp"
+        },
+        {
+          "code": "0380",
+          "name": "Uppsala"
+        },
+        {
+          "code": "0381",
+          "name": "Enköping"
+        },
+        {
+          "code": "0382",
+          "name": "Östhammar"
+        }
+      ]
+    },
+    {
+      "code": "04",
+      "name": "Södermanlands län",
+      "municipalities": [
+        {
+          "code": "0428",
+          "name": "Vingåker"
+        },
+        {
+          "code": "0461",
+          "name": "Gnesta"
+        },
+        {
+          "code": "0480",
+          "name": "Nyköping"
+        },
+        {
+          "code": "0481",
+          "name": "Oxelösund"
+        },
+        {
+          "code": "0482",
+          "name": "Flen"
+        },
+        {
+          "code": "0483",
+          "name": "Katrineholm"
+        },
+        {
+          "code": "0484",
+          "name": "Eskilstuna"
+        },
+        {
+          "code": "0486",
+          "name": "Strängnäs"
+        },
+        {
+          "code": "0488",
+          "name": "Trosa"
+        }
+      ]
+    },
+    {
+      "code": "05",
+      "name": "Östergötlands län",
+      "municipalities": [
+        {
+          "code": "0509",
+          "name": "Ödeshög"
+        },
+        {
+          "code": "0512",
+          "name": "Ydre"
+        },
+        {
+          "code": "0513",
+          "name": "Kinda"
+        },
+        {
+          "code": "0560",
+          "name": "Boxholm"
+        },
+        {
+          "code": "0561",
+          "name": "Åtvidaberg"
+        },
+        {
+          "code": "0562",
+          "name": "Finspång"
+        },
+        {
+          "code": "0563",
+          "name": "Valdemarsvik"
+        },
+        {
+          "code": "0580",
+          "name": "Linköping"
+        },
+        {
+          "code": "0581",
+          "name": "Norrköping"
+        },
+        {
+          "code": "0582",
+          "name": "Söderköping"
+        },
+        {
+          "code": "0583",
+          "name": "Motala"
+        },
+        {
+          "code": "0584",
+          "name": "Vadstena"
+        },
+        {
+          "code": "0586",
+          "name": "Mjölby"
+        }
+      ]
+    },
+    {
+      "code": "06",
+      "name": "Jönköpings län",
+      "municipalities": [
+        {
+          "code": "0604",
+          "name": "Aneby"
+        },
+        {
+          "code": "0617",
+          "name": "Gnosjö"
+        },
+        {
+          "code": "0642",
+          "name": "Mullsjö"
+        },
+        {
+          "code": "0643",
+          "name": "Habo"
+        },
+        {
+          "code": "0662",
+          "name": "Gislaved"
+        },
+        {
+          "code": "0665",
+          "name": "Vaggeryd"
+        },
+        {
+          "code": "0680",
+          "name": "Jönköping"
+        },
+        {
+          "code": "0682",
+          "name": "Nässjö"
+        },
+        {
+          "code": "0683",
+          "name": "Värnamo"
+        },
+        {
+          "code": "0684",
+          "name": "Sävsjö"
+        },
+        {
+          "code": "0685",
+          "name": "Vetlanda"
+        },
+        {
+          "code": "0686",
+          "name": "Eksjö"
+        },
+        {
+          "code": "0687",
+          "name": "Tranås"
+        }
+      ]
+    },
+    {
+      "code": "07",
+      "name": "Kronobergs län",
+      "municipalities": [
+        {
+          "code": "0760",
+          "name": "Uppvidinge"
+        },
+        {
+          "code": "0761",
+          "name": "Lessebo"
+        },
+        {
+          "code": "0763",
+          "name": "Tingsryd"
+        },
+        {
+          "code": "0764",
+          "name": "Alvesta"
+        },
+        {
+          "code": "0765",
+          "name": "Älmhult"
+        },
+        {
+          "code": "0767",
+          "name": "Markaryd"
+        },
+        {
+          "code": "0780",
+          "name": "Växjö"
+        },
+        {
+          "code": "0781",
+          "name": "Ljungby"
+        }
+      ]
+    },
+    {
+      "code": "08",
+      "name": "Kalmar län",
+      "municipalities": [
+        {
+          "code": "0821",
+          "name": "Högsby"
+        },
+        {
+          "code": "0834",
+          "name": "Torsås"
+        },
+        {
+          "code": "0840",
+          "name": "Mörbylånga"
+        },
+        {
+          "code": "0860",
+          "name": "Hultsfred"
+        },
+        {
+          "code": "0861",
+          "name": "Mönsterås"
+        },
+        {
+          "code": "0862",
+          "name": "Emmaboda"
+        },
+        {
+          "code": "0880",
+          "name": "Kalmar"
+        },
+        {
+          "code": "0881",
+          "name": "Nybro"
+        },
+        {
+          "code": "0882",
+          "name": "Oskarshamn"
+        },
+        {
+          "code": "0883",
+          "name": "Västervik"
+        },
+        {
+          "code": "0884",
+          "name": "Vimmerby"
+        },
+        {
+          "code": "0885",
+          "name": "Borgholm"
+        }
+      ]
+    },
+    {
+      "code": "09",
+      "name": "Gotlands län",
+      "municipalities": [
+        {
+          "code": "0980",
+          "name": "Gotland"
+        }
+      ]
+    },
+    {
+      "code": "10",
+      "name": "Blekinge län",
+      "municipalities": [
+        {
+          "code": "1060",
+          "name": "Olofström"
+        },
+        {
+          "code": "1080",
+          "name": "Karlskrona"
+        },
+        {
+          "code": "1081",
+          "name": "Ronneby"
+        },
+        {
+          "code": "1082",
+          "name": "Karlshamn"
+        },
+        {
+          "code": "1083",
+          "name": "Sölvesborg"
+        }
+      ]
+    },
+    {
+      "code": "12",
+      "name": "Skåne län",
+      "municipalities": [
+        {
+          "code": "1214",
+          "name": "Svalöv"
+        },
+        {
+          "code": "1230",
+          "name": "Staffanstorp"
+        },
+        {
+          "code": "1231",
+          "name": "Burlöv"
+        },
+        {
+          "code": "1233",
+          "name": "Vellinge"
+        },
+        {
+          "code": "1256",
+          "name": "Östra Göinge"
+        },
+        {
+          "code": "1257",
+          "name": "Örkelljunga"
+        },
+        {
+          "code": "1260",
+          "name": "Bjuv"
+        },
+        {
+          "code": "1261",
+          "name": "Kävlinge"
+        },
+        {
+          "code": "1262",
+          "name": "Lomma"
+        },
+        {
+          "code": "1263",
+          "name": "Svedala"
+        },
+        {
+          "code": "1264",
+          "name": "Skurup"
+        },
+        {
+          "code": "1265",
+          "name": "Sjöbo"
+        },
+        {
+          "code": "1266",
+          "name": "Hörby"
+        },
+        {
+          "code": "1267",
+          "name": "Höör"
+        },
+        {
+          "code": "1270",
+          "name": "Tomelilla"
+        },
+        {
+          "code": "1272",
+          "name": "Bromölla"
+        },
+        {
+          "code": "1273",
+          "name": "Osby"
+        },
+        {
+          "code": "1275",
+          "name": "Perstorp"
+        },
+        {
+          "code": "1276",
+          "name": "Klippan"
+        },
+        {
+          "code": "1277",
+          "name": "Åstorp"
+        },
+        {
+          "code": "1278",
+          "name": "Båstad"
+        },
+        {
+          "code": "1280",
+          "name": "Malmö"
+        },
+        {
+          "code": "1281",
+          "name": "Lund"
+        },
+        {
+          "code": "1282",
+          "name": "Landskrona"
+        },
+        {
+          "code": "1283",
+          "name": "Helsingborg"
+        },
+        {
+          "code": "1284",
+          "name": "Höganäs"
+        },
+        {
+          "code": "1285",
+          "name": "Eslöv"
+        },
+        {
+          "code": "1286",
+          "name": "Ystad"
+        },
+        {
+          "code": "1287",
+          "name": "Trelleborg"
+        },
+        {
+          "code": "1290",
+          "name": "Kristianstad"
+        },
+        {
+          "code": "1291",
+          "name": "Simrishamn"
+        },
+        {
+          "code": "1292",
+          "name": "Ängelholm"
+        },
+        {
+          "code": "1293",
+          "name": "Hässleholm"
+        }
+      ]
+    },
+    {
+      "code": "13",
+      "name": "Hallands län",
+      "municipalities": [
+        {
+          "code": "1315",
+          "name": "Hylte"
+        },
+        {
+          "code": "1380",
+          "name": "Halmstad"
+        },
+        {
+          "code": "1381",
+          "name": "Laholm"
+        },
+        {
+          "code": "1382",
+          "name": "Falkenberg"
+        },
+        {
+          "code": "1383",
+          "name": "Varberg"
+        },
+        {
+          "code": "1384",
+          "name": "Kungsbacka"
+        }
+      ]
+    },
+    {
+      "code": "14",
+      "name": "Västra Götalands län",
+      "municipalities": [
+        {
+          "code": "1401",
+          "name": "Härryda"
+        },
+        {
+          "code": "1402",
+          "name": "Partille"
+        },
+        {
+          "code": "1407",
+          "name": "Öckerö"
+        },
+        {
+          "code": "1415",
+          "name": "Stenungsund"
+        },
+        {
+          "code": "1419",
+          "name": "Tjörn"
+        },
+        {
+          "code": "1421",
+          "name": "Orust"
+        },
+        {
+          "code": "1427",
+          "name": "Sotenäs"
+        },
+        {
+          "code": "1430",
+          "name": "Munkedal"
+        },
+        {
+          "code": "1435",
+          "name": "Tanum"
+        },
+        {
+          "code": "1438",
+          "name": "Dals-Ed"
+        },
+        {
+          "code": "1439",
+          "name": "Färgelanda"
+        },
+        {
+          "code": "1440",
+          "name": "Ale"
+        },
+        {
+          "code": "1441",
+          "name": "Lerum"
+        },
+        {
+          "code": "1442",
+          "name": "Vårgårda"
+        },
+        {
+          "code": "1443",
+          "name": "Bollebygd"
+        },
+        {
+          "code": "1444",
+          "name": "Grästorp"
+        },
+        {
+          "code": "1445",
+          "name": "Essunga"
+        },
+        {
+          "code": "1446",
+          "name": "Karlsborg"
+        },
+        {
+          "code": "1447",
+          "name": "Gullspång"
+        },
+        {
+          "code": "1452",
+          "name": "Tranemo"
+        },
+        {
+          "code": "1460",
+          "name": "Bengtsfors"
+        },
+        {
+          "code": "1461",
+          "name": "Mellerud"
+        },
+        {
+          "code": "1462",
+          "name": "Lilla Edet"
+        },
+        {
+          "code": "1463",
+          "name": "Mark"
+        },
+        {
+          "code": "1465",
+          "name": "Svenljunga"
+        },
+        {
+          "code": "1466",
+          "name": "Herrljunga"
+        },
+        {
+          "code": "1470",
+          "name": "Vara"
+        },
+        {
+          "code": "1471",
+          "name": "Götene"
+        },
+        {
+          "code": "1472",
+          "name": "Tibro"
+        },
+        {
+          "code": "1473",
+          "name": "Töreboda"
+        },
+        {
+          "code": "1480",
+          "name": "Göteborg"
+        },
+        {
+          "code": "1481",
+          "name": "Mölndal"
+        },
+        {
+          "code": "1482",
+          "name": "Kungälv"
+        },
+        {
+          "code": "1484",
+          "name": "Lysekil"
+        },
+        {
+          "code": "1485",
+          "name": "Uddevalla"
+        },
+        {
+          "code": "1486",
+          "name": "Strömstad"
+        },
+        {
+          "code": "1487",
+          "name": "Vänersborg"
+        },
+        {
+          "code": "1488",
+          "name": "Trollhättan"
+        },
+        {
+          "code": "1489",
+          "name": "Alingsås"
+        },
+        {
+          "code": "1490",
+          "name": "Borås"
+        },
+        {
+          "code": "1491",
+          "name": "Ulricehamn"
+        },
+        {
+          "code": "1492",
+          "name": "Åmål"
+        },
+        {
+          "code": "1493",
+          "name": "Mariestad"
+        },
+        {
+          "code": "1494",
+          "name": "Lidköping"
+        },
+        {
+          "code": "1495",
+          "name": "Skara"
+        },
+        {
+          "code": "1496",
+          "name": "Skövde"
+        },
+        {
+          "code": "1497",
+          "name": "Hjo"
+        },
+        {
+          "code": "1498",
+          "name": "Tidaholm"
+        },
+        {
+          "code": "1499",
+          "name": "Falköping"
+        }
+      ]
+    },
+    {
+      "code": "17",
+      "name": "Värmlands län",
+      "municipalities": [
+        {
+          "code": "1715",
+          "name": "Kil"
+        },
+        {
+          "code": "1730",
+          "name": "Eda"
+        },
+        {
+          "code": "1737",
+          "name": "Torsby"
+        },
+        {
+          "code": "1760",
+          "name": "Storfors"
+        },
+        {
+          "code": "1761",
+          "name": "Hammarö"
+        },
+        {
+          "code": "1762",
+          "name": "Munkfors"
+        },
+        {
+          "code": "1763",
+          "name": "Forshaga"
+        },
+        {
+          "code": "1764",
+          "name": "Grums"
+        },
+        {
+          "code": "1765",
+          "name": "Årjäng"
+        },
+        {
+          "code": "1766",
+          "name": "Sunne"
+        },
+        {
+          "code": "1780",
+          "name": "Karlstad"
+        },
+        {
+          "code": "1781",
+          "name": "Kristinehamn"
+        },
+        {
+          "code": "1782",
+          "name": "Filipstad"
+        },
+        {
+          "code": "1783",
+          "name": "Hagfors"
+        },
+        {
+          "code": "1784",
+          "name": "Arvika"
+        },
+        {
+          "code": "1785",
+          "name": "Säffle"
+        }
+      ]
+    },
+    {
+      "code": "18",
+      "name": "Örebro län",
+      "municipalities": [
+        {
+          "code": "1814",
+          "name": "Lekeberg"
+        },
+        {
+          "code": "1860",
+          "name": "Laxå"
+        },
+        {
+          "code": "1861",
+          "name": "Hallsberg"
+        },
+        {
+          "code": "1862",
+          "name": "Degerfors"
+        },
+        {
+          "code": "1863",
+          "name": "Hällefors"
+        },
+        {
+          "code": "1864",
+          "name": "Ljusnarsberg"
+        },
+        {
+          "code": "1880",
+          "name": "Örebro"
+        },
+        {
+          "code": "1881",
+          "name": "Kumla"
+        },
+        {
+          "code": "1882",
+          "name": "Askersund"
+        },
+        {
+          "code": "1883",
+          "name": "Karlskoga"
+        },
+        {
+          "code": "1884",
+          "name": "Nora"
+        },
+        {
+          "code": "1885",
+          "name": "Lindesberg"
+        }
+      ]
+    },
+    {
+      "code": "19",
+      "name": "Västmanlands län",
+      "municipalities": [
+        {
+          "code": "1904",
+          "name": "Skinnskatteberg"
+        },
+        {
+          "code": "1907",
+          "name": "Surahammar"
+        },
+        {
+          "code": "1960",
+          "name": "Kungsör"
+        },
+        {
+          "code": "1961",
+          "name": "Hallstahammar"
+        },
+        {
+          "code": "1962",
+          "name": "Norberg"
+        },
+        {
+          "code": "1980",
+          "name": "Västerås"
+        },
+        {
+          "code": "1981",
+          "name": "Sala"
+        },
+        {
+          "code": "1982",
+          "name": "Fagersta"
+        },
+        {
+          "code": "1983",
+          "name": "Köping"
+        },
+        {
+          "code": "1984",
+          "name": "Arboga"
+        }
+      ]
+    },
+    {
+      "code": "20",
+      "name": "Dalarnas län",
+      "municipalities": [
+        {
+          "code": "2021",
+          "name": "Vansbro"
+        },
+        {
+          "code": "2023",
+          "name": "Malung-Sälen"
+        },
+        {
+          "code": "2026",
+          "name": "Gagnef"
+        },
+        {
+          "code": "2029",
+          "name": "Leksand"
+        },
+        {
+          "code": "2031",
+          "name": "Rättvik"
+        },
+        {
+          "code": "2034",
+          "name": "Orsa"
+        },
+        {
+          "code": "2039",
+          "name": "Älvdalen"
+        },
+        {
+          "code": "2061",
+          "name": "Smedjebacken"
+        },
+        {
+          "code": "2062",
+          "name": "Mora"
+        },
+        {
+          "code": "2080",
+          "name": "Falun"
+        },
+        {
+          "code": "2081",
+          "name": "Borlänge"
+        },
+        {
+          "code": "2082",
+          "name": "Säter"
+        },
+        {
+          "code": "2083",
+          "name": "Hedemora"
+        },
+        {
+          "code": "2084",
+          "name": "Avesta"
+        },
+        {
+          "code": "2085",
+          "name": "Ludvika"
+        }
+      ]
+    },
+    {
+      "code": "21",
+      "name": "Gävleborgs län",
+      "municipalities": [
+        {
+          "code": "2101",
+          "name": "Ockelbo"
+        },
+        {
+          "code": "2104",
+          "name": "Hofors"
+        },
+        {
+          "code": "2121",
+          "name": "Ovanåker"
+        },
+        {
+          "code": "2132",
+          "name": "Nordanstig"
+        },
+        {
+          "code": "2161",
+          "name": "Ljusdal"
+        },
+        {
+          "code": "2180",
+          "name": "Gävle"
+        },
+        {
+          "code": "2181",
+          "name": "Sandviken"
+        },
+        {
+          "code": "2182",
+          "name": "Söderhamn"
+        },
+        {
+          "code": "2183",
+          "name": "Bollnäs"
+        },
+        {
+          "code": "2184",
+          "name": "Hudiksvall"
+        }
+      ]
+    },
+    {
+      "code": "22",
+      "name": "Västernorrlands län",
+      "municipalities": [
+        {
+          "code": "2260",
+          "name": "Ånge"
+        },
+        {
+          "code": "2262",
+          "name": "Timrå"
+        },
+        {
+          "code": "2280",
+          "name": "Härnösand"
+        },
+        {
+          "code": "2281",
+          "name": "Sundsvall"
+        },
+        {
+          "code": "2282",
+          "name": "Kramfors"
+        },
+        {
+          "code": "2283",
+          "name": "Sollefteå"
+        },
+        {
+          "code": "2284",
+          "name": "Örnsköldsvik"
+        }
+      ]
+    },
+    {
+      "code": "23",
+      "name": "Jämtlands län",
+      "municipalities": [
+        {
+          "code": "2303",
+          "name": "Ragunda"
+        },
+        {
+          "code": "2305",
+          "name": "Bräcke"
+        },
+        {
+          "code": "2309",
+          "name": "Krokom"
+        },
+        {
+          "code": "2313",
+          "name": "Strömsund"
+        },
+        {
+          "code": "2321",
+          "name": "Åre"
+        },
+        {
+          "code": "2326",
+          "name": "Berg"
+        },
+        {
+          "code": "2361",
+          "name": "Härjedalen"
+        },
+        {
+          "code": "2380",
+          "name": "Östersund"
+        }
+      ]
+    },
+    {
+      "code": "24",
+      "name": "Västerbottens län",
+      "municipalities": [
+        {
+          "code": "2401",
+          "name": "Nordmaling"
+        },
+        {
+          "code": "2403",
+          "name": "Bjurholm"
+        },
+        {
+          "code": "2404",
+          "name": "Vindeln"
+        },
+        {
+          "code": "2409",
+          "name": "Robertsfors"
+        },
+        {
+          "code": "2417",
+          "name": "Norsjö"
+        },
+        {
+          "code": "2418",
+          "name": "Malå"
+        },
+        {
+          "code": "2421",
+          "name": "Storuman"
+        },
+        {
+          "code": "2422",
+          "name": "Sorsele"
+        },
+        {
+          "code": "2425",
+          "name": "Dorotea"
+        },
+        {
+          "code": "2460",
+          "name": "Vännäs"
+        },
+        {
+          "code": "2462",
+          "name": "Vilhelmina"
+        },
+        {
+          "code": "2463",
+          "name": "Åsele"
+        },
+        {
+          "code": "2480",
+          "name": "Umeå"
+        },
+        {
+          "code": "2481",
+          "name": "Lycksele"
+        },
+        {
+          "code": "2482",
+          "name": "Skellefteå"
+        }
+      ]
+    },
+    {
+      "code": "25",
+      "name": "Norrbottens län",
+      "municipalities": [
+        {
+          "code": "2505",
+          "name": "Arvidsjaur"
+        },
+        {
+          "code": "2506",
+          "name": "Arjeplog"
+        },
+        {
+          "code": "2510",
+          "name": "Jokkmokk"
+        },
+        {
+          "code": "2513",
+          "name": "Överkalix"
+        },
+        {
+          "code": "2514",
+          "name": "Kalix"
+        },
+        {
+          "code": "2518",
+          "name": "Övertorneå"
+        },
+        {
+          "code": "2521",
+          "name": "Pajala"
+        },
+        {
+          "code": "2523",
+          "name": "Gällivare"
+        },
+        {
+          "code": "2560",
+          "name": "Älvsbyn"
+        },
+        {
+          "code": "2580",
+          "name": "Luleå"
+        },
+        {
+          "code": "2581",
+          "name": "Piteå"
+        },
+        {
+          "code": "2582",
+          "name": "Boden"
+        },
+        {
+          "code": "2583",
+          "name": "Haparanda"
+        },
+        {
+          "code": "2584",
+          "name": "Kiruna"
+        }
+      ]
+    }
+  ]
+}
