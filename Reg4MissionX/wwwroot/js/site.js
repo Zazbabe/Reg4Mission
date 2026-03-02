@@ -14,6 +14,16 @@
         el.classList.toggle("d-none", !shouldShow);
     }
 
+    function closeOffcanvasIfOpen() {
+        const el = document.getElementById("mainOffcanvas");
+        if (!el) return;
+
+        if (window.bootstrap?.Offcanvas) {
+            const instance = window.bootstrap.Offcanvas.getInstance(el);
+            if (instance) instance.hide();
+        }
+    }
+
     function updateNavbar() {
         const logged = isLoggedIn();
 
@@ -29,16 +39,17 @@
 
         // Ska inte synas i app-läge
         show(document.getElementById("navHome"), !logged);
-        show(document.getElementById("navPrivacy"), !logged);
     }
 
-    // UI-only "guard"
     function guardProtectedPages() {
-        const requires = document.querySelector("[data-requires-auth='true']");
-        if (!requires) return;
+        const path = window.location.pathname.toLowerCase();
 
-        if (!isLoggedIn()) {
-            window.location.href = "/#login";
+        const protectedPaths = ["/dashboard", "/search", "/profile", "/admin"];
+        const isProtected = protectedPaths.some(p => path.startsWith(p))
+            || document.querySelector("[data-requires-auth='true']");
+
+        if (isProtected && !isLoggedIn()) {
+            window.location.replace("/#login");
         }
     }
 
@@ -50,25 +61,51 @@
             e.preventDefault();
             setLoggedIn(true);
             updateNavbar();
-            window.location.href = "/Dashboard";
+            closeOffcanvasIfOpen();
+            window.location.assign("/Dashboard");
         });
     }
 
     function hookLogout() {
-        const link = document.getElementById("logoutLink");
-        if (!link) return;
+        const btn =
+            document.querySelector("[data-action='logout']") ||
+            document.getElementById("navLogout") ||
+            document.getElementById("logoutLink");
 
-        link.addEventListener("click", function (e) {
+        if (!btn) return;
+
+        btn.addEventListener("click", function (e) {
             e.preventDefault();
+
             setLoggedIn(false);
             updateNavbar();
-            window.location.href = "/";
+            closeOffcanvasIfOpen();
+
+            setTimeout(() => {
+                window.location.assign("/#login");
+            }, 50);
+        });
+    }
+
+    function hookOffcanvasLinkClose() {
+        const offcanvas = document.getElementById("mainOffcanvas");
+        if (!offcanvas) return;
+
+        offcanvas.addEventListener("click", function (e) {
+            const a = e.target.closest("a");
+            if (!a) return;
+
+            // Don't interfere with logout (we handle it)
+            if (a.id === "navLogout" || a.getAttribute("data-action") === "logout") return;
+
+            closeOffcanvasIfOpen();
         });
     }
 
     // Init
     updateNavbar();
+    guardProtectedPages();
     hookLoginForm();
     hookLogout();
-    guardProtectedPages();
+    hookOffcanvasLinkClose();
 })();

@@ -1,10 +1,10 @@
 ﻿@model Reg4MissionX.ViewModels.CreateRolesVm
 @{
-    ViewData["Title"] = "Create Roles";
+    ViewData["Title"] = "Skapa Roller";
 }
 
 <div class="container py-4">
-    <h2 class="mb-3">Create Roles</h2>
+    <h2 class="mb-3">Skapa Roller</h2>
 
     <div class="card shadow-sm">
         <div class="card-body">
@@ -12,14 +12,14 @@
                 @Html.AntiForgeryToken()
 
                 <div class="mb-3">
-                    <label class="form-label">Roles (comma-separated)</label>
+                    <label class="form-label">Roller (komma-separerade)</label>
                     <input asp-for="Roles" class="form-control" placeholder="Admin, SysAdmin, PrivateUser, TownshipUser" />
                     <span asp-validation-for="Roles" class="text-danger"></span>
-                    <div class="form-text">Example: <code>Admin, SysAdmin, PrivateUser, TownshipUser</code></div>
+                    <div class="form-text">Exampel: <code>Admin, SysAdmin, PrivateUser, TownshipUser</code></div>
                 </div>
 
-                <button class="btn btn-primary" type="submit">Create</button>
-                <a class="btn btn-link" asp-action="Index">Back</a>
+                <button class="btn btn-primary" type="submit">Skapa</button>
+                <a class="btn btn-link" asp-action="Index">Tillbaka</a>
             </form>
         </div>
     </div>
