@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Reg4MissionX.ViewModels; 
+using Reg4MissionX.ViewModels;
 
 namespace Reg4MissionX.Controllers
 {
@@ -13,7 +13,7 @@ namespace Reg4MissionX.Controllers
         }
 
         // POST: /Account/Register
-        // (UI-only: INGET SPARAS ÄNNU)
+        // UI-only: Nothing is saved yet
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Register(RegisterVm model)
@@ -23,9 +23,10 @@ namespace Reg4MissionX.Controllers
                 return View(model);
             }
 
-            // UI-only: här kommer backend/Identity senare! :)
-            // För nu kan vi bara visa en “tack”-ruta eller skicka tillbaka.
-            TempData["Message"] = "UI OK! Backend kommer senare";
+            // UI-only: backend/Identity will be added later
+            // For now we just show a success message and redirect back to the form.
+            TempData["Success"] = "UI OK! Backend kommer senare.";
+
             return RedirectToAction(nameof(Register));
         }
     }

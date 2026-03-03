@@ -2,37 +2,53 @@
     ViewData["Title"] = "Admin";
 }
 
-<div class="container py-4">
-    <h2 class="mb-3">Admin</h2>
+<div class="mx-auto max-w-5xl">
+    <div class="mb-6">
+        <h1 class="text-3xl font-semibold text-slate-900">Admin</h1>
+        <p class="mt-2 text-slate-600">Administrera roller och behörigheter.</p>
+    </div>
 
     @if (TempData["Success"] is string ok && !string.IsNullOrWhiteSpace(ok))
     {
-        <div class="alert alert-success">@ok</div>
+        <div class="mb-4 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-emerald-900">
+            @ok
+        </div>
     }
 
-    <div class="row g-3">
-        <div class="col-12 col-lg-6">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title">Create roles</h5>
-                    <p class="text-muted">Create roles like <code>Admin</code>, <code>SysAdmin</code>, <code>PrivateUser</code>, <code>TownshipUser</code>.</p>
-                    <a class="btn btn-primary" asp-controller="Admin" asp-action="CreateRoles">Go to Create Roles</a>
-                </div>
+    <div class="grid gap-4 lg:grid-cols-2">
+        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <h2 class="text-lg font-semibold text-slate-900">Skapa roller</h2>
+            <p class="mt-2 text-slate-600">
+                Skapa roller som <code class="rounded bg-slate-100 px-2 py-0.5 text-sm">Admin</code>,
+                <code class="rounded bg-slate-100 px-2 py-0.5 text-sm">SysAdmin</code>,
+                <code class="rounded bg-slate-100 px-2 py-0.5 text-sm">PrivateUser</code>,
+                <code class="rounded bg-slate-100 px-2 py-0.5 text-sm">TownshipUser</code>.
+            </p>
+
+            <div class="mt-4">
+                <a class="inline-flex items-center justify-center rounded-lg bg-[var(--rp-accent)] px-4 py-2 font-semibold text-white hover:opacity-95"
+                   asp-controller="Admin" asp-action="CreateRoles">
+                    Gå till “Skapa roller”
+                </a>
             </div>
         </div>
 
-        <div class="col-12 col-lg-6">
-            <div class="card shadow-sm">
-                <div class="card-body">
-                    <h5 class="card-title">Manage roles for a user</h5>
-                    <p class="text-muted">Paste a userId from AspNetUsers.</p>
+        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <h2 class="text-lg font-semibold text-slate-900">Hantera roller för en användare</h2>
+            <p class="mt-2 text-slate-600">
+                Klistra in ett <span class="font-semibold">userId</span> (GUID) från tabellen <code class="rounded bg-slate-100 px-2 py-0.5 text-sm">AspNetUsers</code>.
+            </p>
 
-                    <form asp-controller="Admin" asp-action="GetRoles" method="get" class="d-flex gap-2">
-                        <input class="form-control" name="userId" placeholder="UserId (GUID)" />
-                        <button class="btn btn-outline-primary" type="submit">Open</button>
-                    </form>
-                </div>
-            </div>
+            <form asp-controller="Admin" asp-action="GetRoles" method="get" class="mt-4 flex flex-col gap-3 sm:flex-row">
+                <input class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 outline-none focus:border-[var(--rp-accent)] focus:ring-4 focus:ring-[var(--rp-accent)]/20"
+                       name="userId"
+                       placeholder="UserId (GUID)"
+                       autocomplete="off" />
+                <button class="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50"
+                        type="submit">
+                    Öppna
+                </button>
+            </form>
         </div>
     </div>
 </div>

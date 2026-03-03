@@ -1,0 +1,8 @@
+﻿@import "tailwindcss";
+
+/* Tell Tailwind where to scan for class names (Razor views, areas, pages) */
+/* tailwind.css is in: /wwwroot/css/
+/* project root is:   / (two levels up from here) */
+@source "../../Views/**/*.cshtml";
+@source "../../Areas/**/*.cshtml";
+@source "../../Pages/**/*.cshtml";
