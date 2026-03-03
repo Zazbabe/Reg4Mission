@@ -5,117 +5,173 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Resursportalen</title>
 
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <!-- Tailwind output (generated file) -->
+    <link rel="stylesheet" href="~/css/app.css" asp-append-version="true" />
+
+    <!-- Small project overrides (keep AFTER app.css so it can override) -->
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
     <link rel="stylesheet" href="~/Reg4MissionX.styles.css" asp-append-version="true" />
 </head>
 
-<body class="bg-light">
-    <header>
-        <nav class="navbar navbar-dark rp-navbar">
-            <div class="container">
-                <a class="navbar-brand d-flex align-items-center gap-2" asp-controller="Home" asp-action="Index">
-                    <img src="~/img/logo.png" alt="Resursportalen" class="rp-logo" />
-                    <span class="fw-semibold rp-brand-text">Resursportalen</span>
-                </a>
+<body class="min-h-screen bg-slate-50 text-slate-900">
+    <!-- Sticky top bar -->
+    <header class="sticky top-0 z-50 border-b border-white/10 bg-[var(--rp-nav)]">
+        <div class="mx-auto flex max-w-6xl items-center gap-3 px-4 py-3">
+            <a id="brandLink" class="flex items-center gap-3" asp-controller="Home" asp-action="Index">
+                <img src="~/img/logo.png" alt="Resursportalen" class="h-10 w-auto" />
+                <span class="text-lg font-semibold tracking-wide text-white">Resursportalen</span>
+            </a>
 
-                <!-- Always visible hamburger (opens offcanvas) -->
-                <button class="navbar-toggler d-inline-flex ms-auto rp-hamburger"
-                        type="button"
-                        data-bs-toggle="offcanvas"
-                        data-bs-target="#mainOffcanvas"
-                        aria-controls="mainOffcanvas"
-                        aria-label="Meny">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-            </div>
-        </nav>
-
-        <!-- Offcanvas menu (always used, all screen sizes) -->
-        <div class="offcanvas offcanvas-end rp-offcanvas" tabindex="-1" id="mainOffcanvas" aria-labelledby="mainOffcanvasLabel">
-            <div class="offcanvas-header">
-                <div class="d-flex align-items-center gap-2">
-                    <img src="~/img/logo.png" alt="Resursportalen" class="rp-logo" />
-                    <h5 class="offcanvas-title mb-0" id="mainOffcanvasLabel">Resursportalen</h5>
-                </div>
-                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Stäng"></button>
-            </div>
-
-            <div class="offcanvas-body">
-                <!-- Meny -->
-                <ul class="navbar-nav mb-3">
-
-                    <li class="nav-item" id="navHome">
-                        <a class="nav-link" asp-controller="Home" asp-action="Index">Välkommen</a>
-                    </li>
-
-                    <!-- Utloggat-läge -->
-                    <li class="nav-item" id="navRegister">
-                        <a class="nav-link" asp-controller="Account" asp-action="Register" id="registerLink">Registrera</a>
-                    </li>
-
-                    <!-- Inloggat-läge (döljs av default, JS visar när "loggedIn" finns) -->
-                    <li class="nav-item d-none" id="navDashboard">
-                        <a class="nav-link" asp-controller="Dashboard" asp-action="Index">Översikt</a>
-                    </li>
-
-                    <li class="nav-item d-none" id="navSearch">
-                        <a class="nav-link" asp-controller="Search" asp-action="Index">Sök</a>
-                    </li>
-
-                    <li class="nav-item d-none" id="navProfile">
-                        <a class="nav-link" asp-controller="Profile" asp-action="Index">Profil</a>
-                    </li>
-                </ul>
-
-                <hr class="my-3" />
-
-                <!-- Auth actions -->
-                <div class="d-grid gap-2">
-                    <!-- Utloggat: Logga in hoppar till login-boxen på startsidan -->
-                    <a class="btn btn-outline-primary" id="navLogin"
-                       asp-controller="Home" asp-action="Index" asp-fragment="login">
-                        Logga in
-                    </a>
-
-                    <!-- Inloggat: Logga ut (UI-only via JS) -->
-                    <a class="btn btn-primary d-none" href="#" id="navLogout" data-action="logout">
-                        Logga ut
-                    </a>
-                </div>
-
-                <div class="mt-3 text-muted small">
-                    <a class="link-light text-decoration-none" asp-controller="Home" asp-action="Privacy">Integritet</a>
-                </div>
-            </div>
+            <!-- Always visible hamburger button -->
+            <!-- IMPORTANT: flex-col makes the 3 bars stack vertically -->
+            <button id="menuBtn"
+                    type="button"
+                    class="ml-auto inline-flex h-10 w-10 flex-col items-center justify-center gap-1 rounded-lg border border-white/25 text-white hover:bg-white/10"
+                    aria-label="Meny"
+                    aria-controls="drawer"
+                    aria-expanded="false">
+                <span class="block h-[2px] w-5 bg-white"></span>
+                <span class="block h-[2px] w-5 bg-white"></span>
+                <span class="block h-[2px] w-5 bg-white"></span>
+            </button>
         </div>
     </header>
 
+    <!-- Drawer overlay (click to close) -->
+    <div id="drawerOverlay" class="fixed inset-0 z-50 hidden bg-black/40"></div>
+
+    <!-- Drawer (right side) -->
+    <aside id="drawer"
+           class="fixed right-0 top-0 z-50 h-full w-80 translate-x-full bg-[var(--rp-primary)] text-white shadow-lg transition-transform duration-200 ease-out">
+        <div class="flex items-center gap-3 border-b border-white/10 px-4 py-4">
+            <img src="~/img/logo.png" alt="Resursportalen" class="h-9 w-auto" />
+            <div class="font-semibold">Resursportalen</div>
+
+            <button id="drawerCloseBtn"
+                    type="button"
+                    class="ml-auto inline-flex h-9 w-9 items-center justify-center rounded-lg border border-white/15 hover:bg-white/10"
+                    aria-label="Stäng meny">
+                ✕
+            </button>
+        </div>
+
+        <div class="px-4 py-4">
+            <!-- Navigation -->
+            <nav class="space-y-2">
+                <a id="navHome"
+                   class="block rounded-lg px-3 py-2 text-white/90 hover:bg-white/10"
+                   asp-controller="Home" asp-action="Index">Välkommen</a>
+
+                <!-- Logged-out links -->
+                <a id="navRegister"
+                   class="block rounded-lg px-3 py-2 text-white/90 hover:bg-white/10"
+                   asp-controller="Account" asp-action="Register">Registrera</a>
+
+                <!-- Logged-in links (hidden by default, site.js will toggle these) -->
+                <a id="navDashboard"
+                   class="hidden block w-full rounded-lg px-3 py-2 text-white/90 hover:bg-white/10"
+                   asp-controller="Dashboard" asp-action="Index">Översikt</a>
+
+                <a id="navSearch"
+                   class="hidden block w-full rounded-lg px-3 py-2 text-white/90 hover:bg-white/10"
+                   asp-controller="Search" asp-action="Index">Sök</a>
+
+                <a id="navProfile"
+                   class="hidden block w-full rounded-lg px-3 py-2 text-white/90 hover:bg-white/10"
+                   asp-controller="Profile" asp-action="Index">Profil</a>
+            </nav>
+
+            <hr class="my-4 border-white/10" />
+
+            <!-- Auth actions -->
+            <div class="space-y-2">
+                <!-- Logged out: goes to #login on Home -->
+                <a id="navLogin"
+                   class="block w-full rounded-lg border border-white/20 px-3 py-2 text-center text-white hover:bg-white/10"
+                   asp-controller="Home" asp-action="Index" asp-fragment="login">
+                    Logga in
+                </a>
+
+                <!-- Logged in: UI-only logout (site.js handles click) -->
+                <a id="navLogout"
+                   class="hidden w-full rounded-lg bg-[var(--rp-accent)] px-3 py-2 text-center font-semibold text-white hover:opacity-95"
+                   href="#"
+                   data-action="logout">
+                    Logga ut
+                </a>
+            </div>
+
+            <div class="mt-4 text-sm text-white/70">
+                <a class="underline decoration-white/30 hover:decoration-white"
+                   asp-controller="Home" asp-action="Privacy">Integritet</a>
+            </div>
+        </div>
+    </aside>
+
     <!-- Page content -->
-    <div class="container py-4">
+    <main class="mx-auto max-w-6xl px-4 py-8">
         @if (TempData["Success"] is string success)
         {
-            <div class="alert alert-success">@success</div>
+            <div class="mb-4 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-emerald-900">@success</div>
         }
         @if (TempData["Error"] is string error)
         {
-            <div class="alert alert-danger">@error</div>
+            <div class="mb-4 rounded-lg border border-rose-200 bg-rose-50 px-4 py-3 text-rose-900">@error</div>
         }
 
-        <main role="main">
-            @RenderBody()
-        </main>
-    </div>
+        @RenderBody()
+    </main>
 
-    <footer class="border-top bg-white">
-        <div class="container py-3 text-muted small">
-            &copy; 2026 - Resursportalen - <a asp-controller="Home" asp-action="Privacy">Integritet</a>
+    <footer class="border-t border-slate-200 bg-white">
+        <div class="mx-auto max-w-6xl px-4 py-4 text-sm text-slate-500">
+            &copy; 2026 - Resursportalen - <a class="underline" asp-controller="Home" asp-action="Privacy">Integritet</a>
         </div>
     </footer>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- UI-only scripts -->
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <!-- Drawer open/close (plain JS, no Bootstrap) -->
+    <script>
+        (function () {
+            const menuBtn = document.getElementById("menuBtn");
+            const drawer = document.getElementById("drawer");
+            const overlay = document.getElementById("drawerOverlay");
+            const closeBtn = document.getElementById("drawerCloseBtn");
+
+            if (!menuBtn || !drawer || !overlay || !closeBtn) return;
+
+            function openDrawer() {
+                drawer.classList.remove("translate-x-full");
+                overlay.classList.remove("hidden");
+                menuBtn.setAttribute("aria-expanded", "true");
+            }
+
+            function closeDrawer() {
+                drawer.classList.add("translate-x-full");
+                overlay.classList.add("hidden");
+                menuBtn.setAttribute("aria-expanded", "false");
+            }
+
+            menuBtn.addEventListener("click", openDrawer);
+            closeBtn.addEventListener("click", closeDrawer);
+            overlay.addEventListener("click", closeDrawer);
+
+            // Close drawer after clicking any navigation link
+            drawer.addEventListener("click", (e) => {
+                const a = e.target.closest("a");
+                if (!a) return;
+                closeDrawer();
+            });
+
+            // Close drawer on Escape
+            document.addEventListener("keydown", (e) => {
+                if (e.key === "Escape") closeDrawer();
+            });
+        })();
+    </script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

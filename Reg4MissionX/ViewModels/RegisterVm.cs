@@ -5,7 +5,6 @@ namespace Reg4MissionX.ViewModels
 {
     public class RegisterVm
     {
-       
         [Required(ErrorMessage = "Fyll i namn.")]
         [Display(Name = "Namn")]
         public string FullName { get; set; } = "";
@@ -23,7 +22,7 @@ namespace Reg4MissionX.ViewModels
         [DataType(DataType.Password)]
         [MinLength(8, ErrorMessage = "Lösenordet måste vara minst 8 tecken.")]
         [RegularExpression(@"^(?=.*[^\w\s]).{8,}$",
-        ErrorMessage = "Lösenordet måste innehålla minst 1 specialtecken (t.ex. ! ? # %).")]
+            ErrorMessage = "Lösenordet måste innehålla minst 1 specialtecken (t.ex. ! ? # %).")]
         [Display(Name = "Lösenord")]
         public string Password { get; set; } = "";
 
@@ -33,7 +32,7 @@ namespace Reg4MissionX.ViewModels
         [Compare(nameof(Password), ErrorMessage = "Lösenorden matchar inte.")]
         public string ConfirmPassword { get; set; } = "";
 
-        // PRIVATPERSON
+        // Private person fields
         [Required(ErrorMessage = "Fyll i ålder.")]
         [Range(0, 120, ErrorMessage = "Ålder måste vara mellan 0 och 120.")]
         [Display(Name = "Ålder")]
@@ -47,15 +46,15 @@ namespace Reg4MissionX.ViewModels
         [Display(Name = "Län")]
         public string CountyCode { get; set; } = "";
 
-        // Multi-select
+        // Multi-select (must choose at least one)
         [MinLength(1, ErrorMessage = "Välj minst en kommun.")]
         public List<string> MunicipalityCodes { get; set; } = new();
 
         [MinLength(1, ErrorMessage = "Välj minst en avdelning.")]
         public List<string> Departments { get; set; } = new(); // "LSS", "SoL", "Socialtjänsten"
 
-        // GDPR checkbox: Required funkar inte “bra” på bool (bool är alltid true/false).
-        // Bästa sättet är Range(true,true)
+        // For checkboxes: Required does not work well on bool (bool is always true/false).
+        // Best practice is using Range(true, true).
         [Range(typeof(bool), "true", "true", ErrorMessage = "Du måste godkänna GDPR.")]
         public bool AcceptGdpr { get; set; }
     }

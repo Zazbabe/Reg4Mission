@@ -1,149 +1,51 @@
-/* Base template CSS */
-html {
-    font-size: 14px;
-}
-
-@media (min-width: 768px) {
-    html {
-        font-size: 16px;
-    }
-}
-
-/* Brand palette */
+/* Brand palette (used by Tailwind arbitrary values like bg-[var(--rp-nav)]) */
 :root {
-    --rp-primary: #0E2A47; /* deep navy */
-    --rp-accent: #1F8A87; /* teal */
-    --rp-nav: #187A76; /* navbar teal */
-    --rp-border: rgba(15, 23, 42, 0.10);
+    --rp-primary: #0E2A47; /* Deep navy */
+    --rp-accent: #1F8A87; /* Teal */
+    --rp-nav: #146B72; /* Teal/navy blend (fits the logo better than pure green) */
 }
 
-/* Focus ring: replace Bootstrap blue with brand accent */
-.btn:focus,
-.btn:active:focus,
-.btn-link.nav-link:focus,
-.form-control:focus,
-.form-check-input:focus {
-    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem rgba(31, 138, 135, 0.45);
-}
-
+/* Improve font rendering a bit */
 html {
-    position: relative;
-    min-height: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-body {
-    margin-bottom: 60px;
-    /* I already have <body class="bg-light"> in _Layout, so no extra background needed here */
+/* Make logo never look stretched */
+img {
+    image-rendering: auto;
+}
+.rp-hamburger {
+    color: #fff; /* makes the SVG lines white */
 }
 
-.form-floating > .form-control-plaintext::placeholder,
-.form-floating > .form-control::placeholder {
-    color: var(--bs-secondary-color);
-    text-align: end;
+/* UI fallback: make hamburger icon visible even if Tailwind utilities are missing */
+#menuBtn {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    width: 40px;
+    height: 40px;
+    border-radius: 0.5rem;
+    border: 1px solid rgba(255,255,255,0.25);
+    background: transparent;
 }
 
-.form-floating > .form-control-plaintext:focus::placeholder,
-.form-floating > .form-control:focus::placeholder {
-    text-align: start;
-}
-
-/* Login card positioning */
-.login-card {
-    top: 1rem;
-}
-
-@media (min-width: 992px) {
-    .login.login-card {
-        top: 1.25rem;
-    }
-}
-
-/* ----------------------------- */
-/* Navbar styling */
-/* ----------------------------- */
-.rp-navbar {
-    background-color: var(--rp-nav);
-    /* makes it feel less "flat" */
-    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-}
-
-/* Bigger logo in navbar */
-.rp-logo {
-    height: 44px;
-    width: auto;
-    display: block;
-}
-
-/* Brand text */
-.rp-brand-text {
-    color: #fff;
-    font-size: 1.25rem;
-    letter-spacing: 0.2px;
-}
-
-/* Navbar links */
-.rp-navbar .nav-link,
-.rp-navbar .navbar-brand {
-    color: rgba(255, 255, 255, 0.92) !important;
-}
-
-    .rp-navbar .nav-link:hover,
-    .rp-navbar .navbar-brand:hover {
-        color: #ffffff !important;
-        opacity: 0.95;
+    #menuBtn span {
+        display: block;
+        width: 20px;
+        height: 2px;
+        background: #fff;
     }
 
-/* Navbar auth links as "buttons" (matches UI-only ids) */
-.rp-navbar a#loginNavLink,
-.rp-navbar a#registerLink,
-.rp-navbar a[href*="Logout"] {
-    background: rgba(255, 255, 255, 0.12);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    padding: 0.35rem 0.75rem;
-    border-radius: 0.6rem;
-    color: #fff !important;
+/* Drawer button links should never look like default blue anchors */
+#drawer a {
+    color: inherit;
     text-decoration: none;
 }
 
-    .rp-navbar a#loginNavLink:hover,
-    .rp-navbar a#registerLink:hover,
-    .rp-navbar a[href*="Logout"]:hover {
-        background: rgba(255, 255, 255, 0.18);
-    }
-
-/* make toggler visible on dark navbar */
-.navbar-dark .navbar-toggler {
-    border-color: rgba(255, 255, 255, 0.25);
-}
-
-/* ----------------------------- */
-/* Login page logo */
-/* ----------------------------- */
-.rp-login-logo {
-    height: 140px;
-    width: auto;
-}
-
-
-/* Always-visible hamburger styling */
-.rp-hamburger {
-    border-color: rgba(255,255,255,0.25);
-}
-
-/* Offcanvas theme to match navbar */
-.rp-offcanvas {
-    background: #0E2A47; /* brand navy */
-    color: #fff;
-}
-
-    .rp-offcanvas .nav-link {
-        color: rgba(255,255,255,0.92);
-    }
-
-        .rp-offcanvas .nav-link:hover {
-            color: #fff;
-        }
-
-    .rp-offcanvas .btn-close {
-        filter: invert(1);
+    #drawer a:hover {
+        text-decoration: none;
     }
