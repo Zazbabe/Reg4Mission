@@ -3,8 +3,13 @@ using Microsoft.EntityFrameworkCore;
 using Reg4MissionX.Data;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
+using Reg4MissionX.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// =====================
+// SERVICES
+// =====================
 
 // Add services to the container.
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
@@ -28,42 +33,39 @@ builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-//
-// DEV ONLY: seed roles + one admin user so I can test /Admin directly
-//
-if (app.Environment.IsDevelopment())
+
+// =====================
+// DATABASE INIT
+// =====================
+
+// AUTO: create DB + tables + seed data on app startup
+using (var scope = app.Services.CreateScope())
 {
-    using var scope = app.Services.CreateScope();
-    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<IdentityUser>>();
-
-    string[] roles = ["Admin", "SysAdmin", "PrivateUser", "TownshipUser"];
-
-    foreach (var r in roles)
+    var services = scope.ServiceProvider;
+    
+    try
     {
-        if (!await roleManager.RoleExistsAsync(r))
-            await roleManager.CreateAsync(new IdentityRole(r));
-    }
+        var context = services.GetRequiredService<ApplicationDbContext>();
+        context.Database.Migrate(); //this will create the database and apply any pending migrations
 
-    var email = "admin@demo.se";
-    var user = await userManager.FindByEmailAsync(email);
-
-    if (user == null)
-    {
-        user = new IdentityUser
+        // 🔐 SAFETY CHECK: run seeding only in development environment to avoid accidentally creating users/roles in production
+        if (app.Environment.IsDevelopment())
         {
-            UserName = email,
-            Email = email,
-            EmailConfirmed = true
-        };
-
-        // Password must match our Identity password rules
-        await userManager.CreateAsync(user, "P@ssw0rd123!");
+            await DbInitializer.SeedAsync(services);
+        }    
     }
-
-    if (!await userManager.IsInRoleAsync(user, "Admin"))
-        await userManager.AddToRoleAsync(user, "Admin");
+    catch (Exception ex)
+    {
+        var logger = services.GetRequiredService<ILogger<Program>>();
+        logger.LogError(ex, "Fel vid databasinitering");
+    }
 }
+
+// =====================
+// PIPELINE
+// =====================
+
+//
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
