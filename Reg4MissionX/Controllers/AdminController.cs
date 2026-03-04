@@ -14,7 +14,7 @@ namespace Reg4MissionX.Controllers
         //Object created for Adding user to role in Identity
         private readonly UserManager<IdentityUser> _userManager;
 
-        //Constructor for HomeController to inject RoleManager and UserManager
+        //Constructor for AdminController to inject RoleManager and UserManager
         public AdminController(RoleManager<IdentityRole> roleManager,
             UserManager<IdentityUser> userManager)
         {
