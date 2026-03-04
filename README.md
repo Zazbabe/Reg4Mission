@@ -100,22 +100,22 @@ Resursportalen aims to:
 ---
 
 ## Project Structure
-Controllers/
-AdminController.cs
-ProfileController.cs
+- Controllers/
+- AdminController.cs
+- ProfileController.cs
 
-Views/
-Profile/
-Index.cshtml
-Edit.cshtml
+- Views/
+- Profile/
+- Index.cshtml
+- Edit.cshtml
 
-wwwroot/
-css/
-js/
+- wwwroot/
+- css/
+- js/
 
-Models/
-Data/
-Services/ (planned)
+- Models/
+- Data/
+- Services/ (planned)
 
 
 ---
@@ -125,10 +125,10 @@ Services/ (planned)
 Feature development is done using Git branches.
 
 Example workflow:
-git checkout -b feature/profile-view-mode
-git add .
-git commit -m "feat: add profile view page and edit page"
-git push -u origin feature/profile-view-mode
+- git checkout -b feature/profile-view-mode
+- git add .
+- git commit -m "feat: add profile view page and edit page"
+- git push -u origin feature/profile-view-mode
 
 
 Pull requests are then reviewed and merged into the `main` branch.
