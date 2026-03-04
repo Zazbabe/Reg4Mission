@@ -1,10 +1,16 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace Reg4MissionX.Controllers
+public class ProfileController : Controller
 {
-    public class ProfileController : Controller
+    public IActionResult Index()
     {
-        [HttpGet]
-        public IActionResult Index() => View();
+        // UI-only: later it will load real data from DB / Identity
+        return View();
+    }
+
+    public IActionResult Edit()
+    {
+        // UI-only: later it will load real data + postback to save
+        return View();
     }
 }
