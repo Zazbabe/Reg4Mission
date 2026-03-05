@@ -1,101 +1,125 @@
-﻿@{
+﻿@model Reg4MissionX.ViewModels.ProfileViewVm
+@{
     ViewData["Title"] = "Min profil";
 }
 
 <div class="mx-auto max-w-5xl" data-requires-auth="true">
-    <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+    <div class="mb-6 flex items-start justify-between gap-4">
         <div>
             <h1 class="text-3xl font-semibold text-slate-900">Min profil</h1>
-            <p class="mt-2 text-slate-600">*/p>
+            <p class="mt-2 text-slate-600">Här ser du dina registrerade uppgifter.</p>
         </div>
 
-        <!-- Edit button -->
-        <a asp-action="Edit"
-           class="inline-flex items-center justify-center rounded-lg bg-[var(--rp-accent)] px-5 py-2 font-semibold text-white shadow-sm hover:opacity-95 focus:outline-none focus:ring-4 focus:ring-[var(--rp-accent)]/25">
-            Redigera profil
+        <a asp-controller="Profile" asp-action="Edit"
+           class="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-5 py-2 font-semibold text-slate-700 hover:bg-slate-50">
+            Redigera
         </a>
     </div>
 
     <div class="grid gap-6 md:grid-cols-12">
-        <!-- Left: Profile image (view-only) -->
         <div class="md:col-span-4">
             <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
                 <h2 class="text-lg font-semibold text-slate-900">Profilbild</h2>
 
                 <div class="mt-4 overflow-hidden rounded-xl border border-slate-200 bg-slate-50">
-                    <div class="aspect-square flex items-center justify-center">
-                        <!-- UI-only: Use placeholder until backend stores an image -->
-                        <div class="text-center">
-                            <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-slate-200 text-slate-600">
-                                <!-- simple avatar circle -->
-                                <span class="text-lg font-semibold">ES</span>
-                            </div>
-                            <div class="mt-3 text-sm text-slate-500">Ingen bild uppladdad</div>
-                        </div>
+                    <div class="aspect-square flex items-center justify-center text-sm text-slate-500">
+                        Ingen bild uppladdad ännu
                     </div>
                 </div>
 
-                <div class="mt-4 text-sm text-slate-500">
-                    Du kan ladda upp/ändra bild via <span class="font-medium text-slate-700">Redigera profil</span>.
-                </div>
+                <p class="mt-3 text-sm text-slate-500">
+                    Profilbild laddas upp inne på profilsidan (kommer snart).
+                </p>
             </div>
         </div>
 
-        <!-- Right: Profile fields (view-only) -->
         <div class="md:col-span-8">
             <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
                 <h2 class="text-lg font-semibold text-slate-900">Uppgifter</h2>
 
-                <!-- UI-only: Fake data for now. Later bind from model -->
                 <div class="mt-4 grid gap-4 md:grid-cols-12">
                     <div class="md:col-span-6">
                         <div class="text-sm font-medium text-slate-700">Namn</div>
                         <div class="mt-1 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-slate-900">
-                            Förnamn Efternamn
+                            @(!string.IsNullOrWhiteSpace(Model.FullName) ? Model.FullName : "—")
                         </div>
                     </div>
 
                     <div class="md:col-span-6">
-                        <div class="text-sm font-medium text-slate-700">Mailadress</div>
+                        <div class="text-sm font-medium text-slate-700">Mailadress (inloggning)</div>
                         <div class="mt-1 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-slate-900">
-                            namn@exempel.se
+                            @(!string.IsNullOrWhiteSpace(Model.Email) ? Model.Email : "—")
                         </div>
                     </div>
 
                     <div class="md:col-span-6">
                         <div class="text-sm font-medium text-slate-700">Telefonnummer</div>
                         <div class="mt-1 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-slate-900">
-                            +46 70 123 45 67
+                            @(Model.PhoneNumber ?? "—")
                         </div>
                     </div>
 
                     <div class="md:col-span-3">
                         <div class="text-sm font-medium text-slate-700">Ålder</div>
                         <div class="mt-1 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-slate-900">
-                            32
+                            @(Model.Age?.ToString() ?? "—")
                         </div>
                     </div>
 
                     <div class="md:col-span-3">
                         <div class="text-sm font-medium text-slate-700">Kön</div>
                         <div class="mt-1 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-slate-900">
-                            Vill ej ange
-                        </div>
-                    </div>
-
-                    <div class="md:col-span-12">
-                        <div class="text-sm font-medium text-slate-700">Intressen</div>
-                        <div class="mt-1 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2 text-slate-900">
-                            Skriv kort… *
+                            @(Model.Gender ?? "—")
                         </div>
                     </div>
                 </div>
 
                 <div class="my-6 h-px bg-slate-200"></div>
 
-                <div class="flex flex-wrap items-center gap-3">
-                    <span class="text-sm text-slate-500">*</span>
+                <h3 class="text-sm font-semibold text-slate-900">Avdelning</h3>
+                <div class="mt-3 flex flex-wrap gap-2">
+                    @if (!Model.DeptLss && !Model.DeptSol && !Model.DeptSocialtjansten)
+                    {
+                        <span class="rounded-full bg-slate-100 px-3 py-1 text-sm text-slate-700">—</span>
+                    }
+                    else
+                    {
+                        if (Model.DeptLss)
+                        {
+                            <span class="rounded-full bg-slate-100 px-3 py-1 text-sm text-slate-800">LSS</span>
+                        }
+                        if (Model.DeptSol)
+                        {
+                            <span class="rounded-full bg-slate-100 px-3 py-1 text-sm text-slate-800">SoL</span>
+                        }
+                        if (Model.DeptSocialtjansten)
+                        {
+                            <span class="rounded-full bg-slate-100 px-3 py-1 text-sm text-slate-800">Socialtjänsten</span>
+                        }
+                    }
                 </div>
+
+                <div class="my-6 h-px bg-slate-200"></div>
+
+                <h3 class="text-sm font-semibold text-slate-900">Valda kommuner</h3>
+
+                @if (Model.Municipalities == null || Model.Municipalities.Count == 0)
+                {
+                    <div class="mt-3 rounded-xl border border-slate-200 bg-slate-50 p-3 text-slate-600">
+                        Inga valda kommuner.
+                    </div>
+                }
+                else
+                {
+                    <div class="mt-3 rounded-xl border border-slate-200 bg-white p-3">
+                        <ul class="list-disc space-y-1 pl-5 text-slate-800">
+                            @foreach (var name in Model.Municipalities)
+                            {
+                                <li>@name</li>
+                            }
+                        </ul>
+                    </div>
+                }
             </div>
         </div>
     </div>

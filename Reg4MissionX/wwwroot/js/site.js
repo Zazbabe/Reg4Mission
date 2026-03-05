@@ -1,104 +1,69 @@
-﻿(function () {
-    // UI-only auth flag
-    const KEY = "r4m_isLoggedIn";
+﻿// wwwroot/js/site.js
+// Auth is handled by ASP.NET Identity (cookies).
+// This file only handles UI behavior (drawer + small helpers).
 
-    function isLoggedIn() {
-        return localStorage.getItem(KEY) === "true";
-    }
+(function () {
+    "use strict";
 
-    function setLoggedIn(value) {
-        localStorage.setItem(KEY, value ? "true" : "false");
-    }
-
-    // Tailwind uses "hidden" instead of Bootstrap "d-none"
-    function show(el, shouldShow) {
-        if (!el) return;
-        el.classList.toggle("hidden", !shouldShow);
-    }
-
-    function updateNavbar() {
-        const logged = isLoggedIn();
-
-        // Logged out
-        show(document.getElementById("navRegister"), !logged);
-        show(document.getElementById("navLogin"), !logged);
-        show(document.getElementById("navHome"), !logged);
-
-        // Logged in
-        show(document.getElementById("navDashboard"), logged);
-        show(document.getElementById("navSearch"), logged);
-        show(document.getElementById("navProfile"), logged);
-        show(document.getElementById("navLogout"), logged);
-
-        // If ever added a navPrivacy id later, this will work:
-        show(document.getElementById("navPrivacy"), !logged);
-    }
-
-    // UI-only guard: redirect if page requires auth
-    function guardProtectedPages() {
-        const requires = document.querySelector("[data-requires-auth='true']");
-        if (!requires) return;
-
-        if (!isLoggedIn()) {
-            window.location.href = "/#login";
+    // Run after DOM is ready
+    function ready(fn) {
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", fn);
+        } else {
+            fn();
         }
     }
 
-    // When logged in, clicking the brand should go to Dashboard (not back to login page)
-    function hookBrandLink() {
-        const brand = document.getElementById("brandLink");
-        if (!brand) return;
+    ready(() => {
+        // =========================
+        // Drawer: open/close
+        // =========================
+        const menuBtn = document.getElementById("menuBtn");
+        const drawer = document.getElementById("drawer");
+        const overlay = document.getElementById("drawerOverlay");
+        const closeBtn = document.getElementById("drawerCloseBtn");
 
-        brand.addEventListener("click", (e) => {
-            if (!isLoggedIn()) return; // normal behavior when logged out
-            e.preventDefault();
-            window.location.href = "/Dashboard";
-        });
-    }
+        function openDrawer() {
+            if (!drawer || !overlay || !menuBtn) return;
+            drawer.classList.remove("translate-x-full");
+            overlay.classList.remove("hidden");
+            menuBtn.setAttribute("aria-expanded", "true");
+        }
 
-    // If someone clicks "Logga in" while already logged in, send them to Dashboard instead
-    function hookLoginNav() {
-        const loginLink = document.getElementById("navLogin");
-        if (!loginLink) return;
+        function closeDrawer() {
+            if (!drawer || !overlay || !menuBtn) return;
+            drawer.classList.add("translate-x-full");
+            overlay.classList.add("hidden");
+            menuBtn.setAttribute("aria-expanded", "false");
+        }
 
-        loginLink.addEventListener("click", (e) => {
-            if (!isLoggedIn()) return; // normal: go to /#login
-            e.preventDefault();
-            window.location.href = "/Dashboard";
-        });
-    }
+        if (menuBtn && drawer && overlay && closeBtn) {
+            menuBtn.addEventListener("click", openDrawer);
+            closeBtn.addEventListener("click", closeDrawer);
+            overlay.addEventListener("click", closeDrawer);
 
-    // Login form (UI-only)
-    function hookLoginForm() {
-        const form = document.getElementById("loginForm");
-        if (!form) return;
+            // Close drawer after clicking any navigation link
+            drawer.addEventListener("click", (e) => {
+                const link = e.target.closest("a");
+                if (!link) return;
+                closeDrawer();
+            });
 
-        form.addEventListener("submit", function (e) {
-            e.preventDefault();
-            setLoggedIn(true);
-            updateNavbar();
-            window.location.href = "/Dashboard";
-        });
-    }
+            // Close drawer on Escape
+            document.addEventListener("keydown", (e) => {
+                if (e.key === "Escape") closeDrawer();
+            });
+        }
 
-    // Logout (UI-only) - layout uses id="navLogout" + data-action="logout"
-    function hookLogout() {
-        const logoutBtn = document.getElementById("navLogout") || document.querySelector('[data-action="logout"]');
-        if (!logoutBtn) return;
-
-        logoutBtn.addEventListener("click", function (e) {
-            e.preventDefault();
-            setLoggedIn(false);
-            updateNavbar();
-            window.location.href = "/"; // back to logged-out Index
-        });
-    }
-
-    // Init
-    updateNavbar();
-    hookBrandLink();
-    hookLoginNav();
-    hookLoginForm();
-    hookLogout();
-    guardProtectedPages();
+        // =========================
+        // TempData alerts: optional auto-hide
+        // Add: data-auto-hide-alert on an alert element to auto-hide it.
+        // =========================
+        const alerts = document.querySelectorAll("[data-auto-hide-alert]");
+        if (alerts.length > 0) {
+            setTimeout(() => {
+                alerts.forEach(a => a.remove());
+            }, 5000);
+        }
+    });
 })();
