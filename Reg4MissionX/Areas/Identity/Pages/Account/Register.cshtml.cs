@@ -17,25 +17,30 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Reg4MissionX.Data;
+using Reg4MissionX.Models;
 
 namespace Reg4MissionX.Areas.Identity.Pages.Account
 {
     public class RegisterModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly IUserStore<IdentityUser> _userStore;
-        private readonly IUserEmailStore<IdentityUser> _emailStore;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IUserStore<ApplicationUser> _userStore;
+        private readonly IUserEmailStore<ApplicationUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly ApplicationDbContext _context;
 
         public RegisterModel(
-            UserManager<IdentityUser> userManager,
-            IUserStore<IdentityUser> userStore,
-            SignInManager<IdentityUser> signInManager,
+            UserManager<ApplicationUser> userManager,
+            IUserStore<ApplicationUser> userStore,
+            SignInManager<ApplicationUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            ApplicationDbContext context)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -43,62 +48,61 @@ namespace Reg4MissionX.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _context = context;
         }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         [BindProperty]
         public InputModel Input { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         public string ReturnUrl { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
-        /// <summary>
-        ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-        ///     directly from your code. This API may change or be removed in future releases.
-        /// </summary>
         public class InputModel
         {
-            /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
+            [Required(ErrorMessage = "Namn är obligatoriskt.")]
+            [Display(Name = "Namn")]
+            public string FullName { get; set; }
+
+            [Phone(ErrorMessage = "Ogiltigt telefonnummer.")]
+            [Display(Name = "Telefonnummer")]
+            public string PhoneNumber { get; set; }
+
             [Required]
             [EmailAddress]
-            [Display(Name = "Email")]
+            [Display(Name = "Mailadress (inloggning)")]
             public string Email { get; set; }
 
-            /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
             [Required]
-            [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
+            [StringLength(100, ErrorMessage = "Lösenordet måste vara minst {2} tecken.", MinimumLength = 8)]
             [DataType(DataType.Password)]
-            [Display(Name = "Password")]
+            [Display(Name = "Lösenord")]
             public string Password { get; set; }
 
-            /// <summary>
-            ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
-            ///     directly from your code. This API may change or be removed in future releases.
-            /// </summary>
             [DataType(DataType.Password)]
-            [Display(Name = "Confirm password")]
-            [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+            [Display(Name = "Bekräfta lösenord")]
+            [Compare("Password", ErrorMessage = "Lösenorden matchar inte.")]
             public string ConfirmPassword { get; set; }
-        }
 
+            [Range(0, 120, ErrorMessage = "Ålder måste vara mellan 0 och 120.")]
+            [Display(Name = "Ålder")]
+            public int? Age { get; set; }
+
+            [Display(Name = "Kön")]
+            public string Gender { get; set; }
+
+            // SCB codes, ex "0114"
+            [MinLength(1, ErrorMessage = "Välj minst en kommun.")]
+            public List<string> MunicipalityCodes { get; set; } = new();
+
+            // Values: "LSS", "SoL", "Socialtjansten"
+            [MinLength(1, ErrorMessage = "Välj minst en avdelning.")]
+            public List<string> Departments { get; set; } = new();
+
+            [Range(typeof(bool), "true", "true", ErrorMessage = "Du måste godkänna GDPR-informationen.")]
+            [Display(Name = "GDPR")]
+            public bool AcceptGdpr { get; set; }
+        }
 
         public async Task OnGetAsync(string returnUrl = null)
         {
@@ -110,71 +114,140 @@ namespace Reg4MissionX.Areas.Identity.Pages.Account
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-            if (ModelState.IsValid)
+
+            // Extra defensive checks (helpful when checkboxes are involved)
+            if (Input.Departments == null || Input.Departments.Count == 0)
+                ModelState.AddModelError("Input.Departments", "Välj minst en avdelning.");
+
+            if (Input.MunicipalityCodes == null || Input.MunicipalityCodes.Count == 0)
+                ModelState.AddModelError("Input.MunicipalityCodes", "Välj minst en kommun.");
+
+            if (!Input.AcceptGdpr)
+                ModelState.AddModelError("Input.AcceptGdpr", "Du måste godkänna GDPR-informationen.");
+
+            if (!ModelState.IsValid)
+                return Page();
+
+            // 1) Create Identity user
+            var user = CreateUser();
+            user.FullName = Input.FullName;
+            user.PhoneNumber = Input.PhoneNumber;
+
+            await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
+            await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+
+            var result = await _userManager.CreateAsync(user, Input.Password);
+
+            if (!result.Succeeded)
             {
-                var user = CreateUser();
-
-                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
-                await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
-                var result = await _userManager.CreateAsync(user, Input.Password);
-
-                if (result.Succeeded)
-                {
-                    _logger.LogInformation("User created a new account with password.");
-
-                    var userId = await _userManager.GetUserIdAsync(user);
-                    var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                    code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                    var callbackUrl = Url.Page(
-                        "/Account/ConfirmEmail",
-                        pageHandler: null,
-                        values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
-                        protocol: Request.Scheme);
-
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
-                    if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                    {
-                        return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
-                    }
-                    else
-                    {
-                        await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
-                    }
-                }
                 foreach (var error in result.Errors)
-                {
                     ModelState.AddModelError(string.Empty, error.Description);
-                }
+
+                return Page();
             }
 
-            // If we got this far, something failed, redisplay form
-            return Page();
-        }
+            _logger.LogInformation("User created a new account with password.");
 
-        private IdentityUser CreateUser()
-        {
+            // 2) Save profile + municipalities + role
             try
             {
-                return Activator.CreateInstance<IdentityUser>();
+                var distinctCodes = Input.MunicipalityCodes.Distinct().ToList();
+
+                var municipalities = await _context.Municipalities
+                    .Where(m => distinctCodes.Contains(m.ScbCode))
+                    .ToListAsync();
+
+                if (municipalities.Count != distinctCodes.Count)
+                {
+                    ModelState.AddModelError("Input.MunicipalityCodes", "En eller flera valda kommuner kunde inte hittas i databasen.");
+                    await _userManager.DeleteAsync(user); // rollback
+                    return Page();
+                }
+
+                bool deptLss = Input.Departments.Contains("LSS");
+                bool deptSol = Input.Departments.Contains("SoL");
+                bool deptSoc = Input.Departments.Contains("Socialtjansten");
+
+                var profile = new PrivatePersonProfile
+                {
+                    UserId = user.Id,
+                    Age = Input.Age,
+                    Gender = Input.Gender,
+
+                    DeptLss = deptLss,
+                    DeptSol = deptSol,
+                    DeptSocialtjansten = deptSoc,
+
+                    GdprAccepted = true,
+                    GdprAcceptedAtUtc = DateTime.UtcNow,
+                    GdprVersion = "v1"
+                };
+
+                foreach (var m in municipalities)
+                {
+                    profile.Municipalities.Add(new PrivateProfileMunicipality
+                    {
+                        MunicipalityId = m.Id
+                    });
+                }
+
+                _context.PrivatePersonProfiles.Add(profile);
+                await _context.SaveChangesAsync();
+
+                // Default role for private registrants
+                await _userManager.AddToRoleAsync(user, "PrivateUser");
             }
             catch
             {
-                throw new InvalidOperationException($"Can't create an instance of '{nameof(IdentityUser)}'. " +
-                    $"Ensure that '{nameof(IdentityUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
-                    $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
+                // If anything fails, remove created user to keep DB consistent
+                await _userManager.DeleteAsync(user);
+                throw;
+            }
+
+            // 3) Email confirmation (kept from scaffold)
+            var userId = await _userManager.GetUserIdAsync(user);
+            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+
+            var callbackUrl = Url.Page(
+                "/Account/ConfirmEmail",
+                pageHandler: null,
+                values: new { area = "Identity", userId, code, returnUrl },
+                protocol: Request.Scheme);
+
+            await _emailSender.SendEmailAsync(
+                Input.Email,
+                "Confirm your email",
+                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+
+            if (_userManager.Options.SignIn.RequireConfirmedAccount)
+            {
+                return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl });
+            }
+
+            await _signInManager.SignInAsync(user, isPersistent: false);
+            return LocalRedirect(returnUrl);
+        }
+
+        private ApplicationUser CreateUser()
+        {
+            try
+            {
+                return Activator.CreateInstance<ApplicationUser>();
+            }
+            catch
+            {
+                throw new InvalidOperationException($"Can't create an instance of '{nameof(ApplicationUser)}'. " +
+                    $"Ensure that '{nameof(ApplicationUser)}' is not an abstract class and has a parameterless constructor.");
             }
         }
 
-        private IUserEmailStore<IdentityUser> GetEmailStore()
+        private IUserEmailStore<ApplicationUser> GetEmailStore()
         {
             if (!_userManager.SupportsUserEmail)
-            {
                 throw new NotSupportedException("The default UI requires a user store with email support.");
-            }
-            return (IUserEmailStore<IdentityUser>)_userStore;
+
+            return (IUserEmailStore<ApplicationUser>)_userStore;
         }
     }
 }
