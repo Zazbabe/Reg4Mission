@@ -33,7 +33,6 @@ builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-
 // =====================
 // DATABASE INIT
 // =====================
@@ -64,8 +63,6 @@ using (var scope = app.Services.CreateScope())
 // =====================
 // PIPELINE
 // =====================
-
-//
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
