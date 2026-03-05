@@ -2,34 +2,51 @@
 
 namespace Reg4MissionX.Controllers
 {
+    [Route("Account")]
     public class AccountController : Controller
     {
-        // Redirect old MVC register route to the real Identity register page
-        // GET: /Account/Register  ->  /Identity/Account/Register
-        [HttpGet]
-        public IActionResult Register(string? returnUrl = null)
-        {
-            if (!string.IsNullOrWhiteSpace(returnUrl))
-            {
-                // Keep ReturnUrl so user can be redirected after successful registration
-                return Redirect($"/Identity/Account/Register?returnUrl={Uri.EscapeDataString(returnUrl)}");
-            }
+        // =========================
+        // LOGIN
+        // =========================
+        // GET:  /Account/Login  ->  /Identity/Account/Login
+        [HttpGet("Login")]
+        public IActionResult Login(string? returnUrl = null)
+            => RedirectToIdentityLogin(returnUrl);
 
-            return Redirect("/Identity/Account/Register");
+        // POST: /Account/Login  ->  /Identity/Account/Login
+        [HttpPost("Login")]
+        [ValidateAntiForgeryToken]
+        public IActionResult LoginPost(string? returnUrl = null)
+            => RedirectToIdentityLogin(returnUrl);
+
+        private IActionResult RedirectToIdentityLogin(string? returnUrl)
+        {
+            var url = "/Identity/Account/Login";
+            if (!string.IsNullOrWhiteSpace(returnUrl))
+                url += $"?ReturnUrl={Uri.EscapeDataString(returnUrl)}";
+            return Redirect(url);
         }
 
-        // If something still POSTs to /Account/Register, redirect to Identity too.
-        // (Better than keeping old UI-only logic around.)
-        [HttpPost]
+        // =========================
+        // REGISTER
+        // =========================
+        // GET:  /Account/Register -> /Identity/Account/Register
+        [HttpGet("Register")]
+        public IActionResult Register(string? returnUrl = null)
+            => RedirectToIdentityRegister(returnUrl);
+
+        // POST: /Account/Register -> /Identity/Account/Register
+        [HttpPost("Register")]
         [ValidateAntiForgeryToken]
         public IActionResult RegisterPost(string? returnUrl = null)
-        {
-            if (!string.IsNullOrWhiteSpace(returnUrl))
-            {
-                return Redirect($"/Identity/Account/Register?returnUrl={Uri.EscapeDataString(returnUrl)}");
-            }
+            => RedirectToIdentityRegister(returnUrl);
 
-            return Redirect("/Identity/Account/Register");
+        private IActionResult RedirectToIdentityRegister(string? returnUrl)
+        {
+            var url = "/Identity/Account/Register";
+            if (!string.IsNullOrWhiteSpace(returnUrl))
+                url += $"?returnUrl={Uri.EscapeDataString(returnUrl)}";
+            return Redirect(url);
         }
     }
 }

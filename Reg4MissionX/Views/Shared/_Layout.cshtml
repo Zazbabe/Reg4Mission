@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+<!DOCTYPE html>
 <html lang="sv">
 <head>
     <meta charset="utf-8" />
@@ -63,43 +64,50 @@
                    class="block rounded-lg px-3 py-2 text-white/90 hover:bg-white/10"
                    asp-controller="Home" asp-action="Index">Välkommen</a>
 
-                <!-- Logged-out links -->
-                <a id="navRegister"
-                   class="block rounded-lg px-3 py-2 text-white/90 hover:bg-white/10"
-                   asp-controller="Account" asp-action="Register">Registrera</a>
+                @if (User?.Identity?.IsAuthenticated == true)
+                {
+                    <a id="navDashboard"
+                       class="block w-full rounded-lg px-3 py-2 text-white/90 hover:bg-white/10"
+                       asp-controller="Dashboard" asp-action="Index">Översikt</a>
 
-                <!-- Logged-in links (hidden by default, site.js will toggle these) -->
-                <a id="navDashboard"
-                   class="hidden block w-full rounded-lg px-3 py-2 text-white/90 hover:bg-white/10"
-                   asp-controller="Dashboard" asp-action="Index">Översikt</a>
+                    <a id="navSearch"
+                       class="block w-full rounded-lg px-3 py-2 text-white/90 hover:bg-white/10"
+                       asp-controller="Search" asp-action="Index">Sök</a>
 
-                <a id="navSearch"
-                   class="hidden block w-full rounded-lg px-3 py-2 text-white/90 hover:bg-white/10"
-                   asp-controller="Search" asp-action="Index">Sök</a>
-
-                <a id="navProfile"
-                   class="hidden block w-full rounded-lg px-3 py-2 text-white/90 hover:bg-white/10"
-                   asp-controller="Profile" asp-action="Index">Profil</a>
+                    <a id="navProfile"
+                       class="block w-full rounded-lg px-3 py-2 text-white/90 hover:bg-white/10"
+                       asp-controller="Profile" asp-action="Index">Profil</a>
+                }
+                else
+                {
+                    <!-- Register should go to Identity scaffold page -->
+                    <a id="navRegister"
+                       class="block rounded-lg px-3 py-2 text-white/90 hover:bg-white/10"
+                       asp-area="Identity" asp-page="/Account/Register">Registrera</a>
+                }
             </nav>
 
             <hr class="my-4 border-white/10" />
 
-            <!-- Auth actions -->
+            <!-- Auth actions (REAL Identity login/logout) -->
             <div class="space-y-2">
-                <!-- Logged out: goes to #login on Home -->
-                <a id="navLogin"
-                   class="block w-full rounded-lg border border-white/20 px-3 py-2 text-center text-white hover:bg-white/10"
-                   asp-controller="Home" asp-action="Index" asp-fragment="login">
-                    Logga in
-                </a>
-
-                <!-- Logged in: UI-only logout (site.js handles click) -->
-                <a id="navLogout"
-                   class="hidden w-full rounded-lg bg-[var(--rp-accent)] px-3 py-2 text-center font-semibold text-white hover:opacity-95"
-                   href="#"
-                   data-action="logout">
-                    Logga ut
-                </a>
+                @if (User?.Identity?.IsAuthenticated == true)
+                {
+                    <form asp-area="Identity" asp-page="/Account/Logout" method="post">
+                        <button type="submit"
+                                class="w-full rounded-lg bg-[var(--rp-accent)] px-3 py-2 text-center font-semibold text-white hover:opacity-95">
+                            Logga ut
+                        </button>
+                    </form>
+                }
+                else
+                {
+                    <a id="navLogin"
+                       class="block w-full rounded-lg border border-white/20 px-3 py-2 text-center text-white hover:bg-white/10"
+                       asp-area="Identity" asp-page="/Account/Login">
+                        Logga in
+                    </a>
+                }
             </div>
 
             <div class="mt-4 text-sm text-white/70">
@@ -129,48 +137,10 @@
         </div>
     </footer>
 
-    <!-- UI-only scripts -->
+    <!-- UI scripts -->
     <script src="~/js/site.js" asp-append-version="true"></script>
 
-    <!-- Drawer open/close (plain JS, no Bootstrap) -->
-    <script>
-        (function () {
-            const menuBtn = document.getElementById("menuBtn");
-            const drawer = document.getElementById("drawer");
-            const overlay = document.getElementById("drawerOverlay");
-            const closeBtn = document.getElementById("drawerCloseBtn");
 
-            if (!menuBtn || !drawer || !overlay || !closeBtn) return;
-
-            function openDrawer() {
-                drawer.classList.remove("translate-x-full");
-                overlay.classList.remove("hidden");
-                menuBtn.setAttribute("aria-expanded", "true");
-            }
-
-            function closeDrawer() {
-                drawer.classList.add("translate-x-full");
-                overlay.classList.add("hidden");
-                menuBtn.setAttribute("aria-expanded", "false");
-            }
-
-            menuBtn.addEventListener("click", openDrawer);
-            closeBtn.addEventListener("click", closeDrawer);
-            overlay.addEventListener("click", closeDrawer);
-
-            // Close drawer after clicking any navigation link
-            drawer.addEventListener("click", (e) => {
-                const a = e.target.closest("a");
-                if (!a) return;
-                closeDrawer();
-            });
-
-            // Close drawer on Escape
-            document.addEventListener("keydown", (e) => {
-                if (e.key === "Escape") closeDrawer();
-            });
-        })();
-    </script>
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

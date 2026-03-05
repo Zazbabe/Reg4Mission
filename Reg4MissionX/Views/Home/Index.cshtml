@@ -1,4 +1,6 @@
-﻿@{
+﻿@model Reg4MissionX.ViewModels.HomeLoginVm
+
+@{
     ViewData["Title"] = "Start";
 }
 
@@ -33,27 +35,43 @@
                 <h1 class="text-2xl font-semibold text-slate-900">Logga in</h1>
                 <p class="mt-1 text-slate-600">För kommuner och registrerade användare</p>
 
-                <form id="loginForm" method="post" action="/Account/Login" class="mt-5 space-y-4" novalidate>
+                <form id="loginForm"
+                      method="post"
+                      asp-controller="Home"
+                      asp-action="Login"
+                      class="mt-5 space-y-4"
+                      novalidate>
+
+                    @Html.AntiForgeryToken()
+
+                    <!-- keep return url -->
+                    <input type="hidden" asp-for="ReturnUrl" />
+
+                    <div asp-validation-summary="ModelOnly"
+                         class="rounded-lg border border-rose-200 bg-rose-50 px-4 py-3 text-rose-900"
+                         role="alert"></div>
+
                     <div>
-                        <label class="mb-1 block text-sm font-medium text-slate-700">Mailadress</label>
-                        <input class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 outline-none focus:border-[var(--rp-accent)] focus:ring-4 focus:ring-[var(--rp-accent)]/20"
-                               type="email"
-                               name="Email"
+                        <label asp-for="Email" class="mb-1 block text-sm font-medium text-slate-700">Mailadress</label>
+                        <input asp-for="Email"
+                               class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 outline-none focus:border-[var(--rp-accent)] focus:ring-4 focus:ring-[var(--rp-accent)]/20"
                                autocomplete="username"
-                               required
                                placeholder="namn@kommun.se" />
-                        <p class="mt-1 hidden text-sm text-rose-600" data-val="email">Fyll i en giltig mailadress.</p>
+                        <span asp-validation-for="Email" class="mt-1 block text-sm text-rose-600"></span>
                     </div>
 
                     <div>
-                        <label class="mb-1 block text-sm font-medium text-slate-700">Lösenord</label>
-                        <input class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 outline-none focus:border-[var(--rp-accent)] focus:ring-4 focus:ring-[var(--rp-accent)]/20"
-                               type="password"
-                               name="Password"
-                               autocomplete="current-password"
-                               required />
-                        <p class="mt-1 hidden text-sm text-rose-600" data-val="password">Fyll i lösenord.</p>
+                        <label asp-for="Password" class="mb-1 block text-sm font-medium text-slate-700">Lösenord</label>
+                        <input asp-for="Password"
+                               class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 outline-none focus:border-[var(--rp-accent)] focus:ring-4 focus:ring-[var(--rp-accent)]/20"
+                               autocomplete="current-password" />
+                        <span asp-validation-for="Password" class="mt-1 block text-sm text-rose-600"></span>
                     </div>
+
+                    <label class="flex items-center gap-2 text-sm text-slate-700">
+                        <input asp-for="RememberMe" class="h-4 w-4 accent-[var(--rp-accent)]" />
+                        Kom ihåg mig
+                    </label>
 
                     <button class="w-full rounded-lg bg-[var(--rp-accent)] px-4 py-2 font-semibold text-white hover:opacity-95"
                             type="submit">
@@ -66,8 +84,9 @@
                     </a>
 
                     <div class="pt-1 text-sm">
+                        <!-- Later: link to Identity forgot password -->
                         <a class="text-slate-500 underline decoration-slate-300 hover:text-slate-700"
-                           href="#">
+                           href="/Identity/Account/ForgotPassword">
                             Glömt lösenord?
                         </a>
                     </div>
@@ -82,36 +101,5 @@
 </div>
 
 @section Scripts {
-    <script>
-        // Tailwind-friendly validation (no Bootstrap classes needed)
-        (function () {
-            const form = document.getElementById("loginForm");
-            if (!form) return;
-
-            const email = form.querySelector("input[name='Email']");
-            const password = form.querySelector("input[name='Password']");
-            const emailMsg = form.querySelector("[data-val='email']");
-            const passMsg = form.querySelector("[data-val='password']");
-
-            function show(el, shouldShow) {
-                if (!el) return;
-                el.classList.toggle("hidden", !shouldShow);
-            }
-
-            form.addEventListener("submit", function (e) {
-                // Let our UI-only login in site.js handle redirect,
-                // but still show basic validation messages.
-                const emailOk = email && email.checkValidity();
-                const passOk = password && password.checkValidity();
-
-                show(emailMsg, !emailOk);
-                show(passMsg, !passOk);
-
-                if (!emailOk || !passOk) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                }
-            });
-        })();
-    </script>
+    <partial name="_ValidationScriptsPartial" />
 }
