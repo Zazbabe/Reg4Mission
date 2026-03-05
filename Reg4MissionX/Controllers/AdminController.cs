@@ -65,12 +65,14 @@ namespace Reg4MissionX.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "SysAdmin")]
         public IActionResult CreateRoles()
         {
             return View(new CreateRolesVm());
         }
 
         [HttpPost]
+        [Authorize(Roles = "SysAdmin")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateRoles(CreateRolesVm model)
         {
@@ -126,6 +128,26 @@ namespace Reg4MissionX.Controllers
             if (user == null)
             {
                 return NotFound();
+            }
+
+            //Get the current user Id and check if the user is a SysAdmin. Doesn't let the Admin add himself/herself to the SysAdmin-role
+            var currentUserId = _userManager.GetUserId(User);
+            var isSysAdmin = await _userManager.IsInRoleAsync(user, "SysAdmin");
+
+            if (model.UserId == currentUserId &&
+                model.CurrentRoles.Contains("SysAdmin") &&
+                !isSysAdmin)
+            {
+                ModelState.AddModelError("", "Du kan inte tilldela dig själv rollen SysAdmin.");
+
+                model.AvailableRoles = _roleManager.Roles
+                    .Select(role => role.Name)
+                    .Where(name => !string.IsNullOrWhiteSpace(name))
+                    .Select(name => name!)
+                    .OrderBy(name => name)
+                    .ToList();
+
+                return View("GetRoles", model);
             }
 
             //An attribute to store the current roles of the user in the variable currentRoles. The first in the local and the second is from the model.
