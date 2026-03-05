@@ -1,67 +1,438 @@
 ﻿@page
 @model RegisterModel
 @{
-    ViewData["Title"] = "Register";
+    ViewData["Title"] = "Registrera";
 }
 
-<h1>@ViewData["Title"]</h1>
-
-<div class="row">
-    <div class="col-md-4">
-        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
-            <h2>Create a new account.</h2>
-            <hr />
-            <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
-                <label asp-for="Input.Email">Email</label>
-                <span asp-validation-for="Input.Email" class="text-danger"></span>
-            </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                <label asp-for="Input.Password">Password</label>
-                <span asp-validation-for="Input.Password" class="text-danger"></span>
-            </div>
-            <div class="form-floating mb-3">
-                <input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" placeholder="password" />
-                <label asp-for="Input.ConfirmPassword">Confirm Password</label>
-                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
-            </div>
-            <button id="registerSubmit" type="submit" class="w-100 btn btn-lg btn-primary">Register</button>
-        </form>
+<div class="mx-auto max-w-3xl">
+    <div class="mb-6">
+        <h1 class="text-3xl font-semibold text-slate-900">Registrera</h1>
+        <p class="mt-2 text-slate-600">Skapa konto som privatperson.</p>
     </div>
-    <div class="col-md-6 col-md-offset-2">
-        <section>
-            <h3>Use another service to register.</h3>
-            <hr />
-            @{
-                if ((Model.ExternalLogins?.Count ?? 0) == 0)
-                {
-                    <div>
-                        <p>
-                            There are no external authentication services configured. See this <a href="https://go.microsoft.com/fwlink/?LinkID=532715">article
-                            about setting up this ASP.NET application to support logging in via external services</a>.
-                        </p>
-                    </div>
-                }
-                else
-                {
-                    <form id="external-account" asp-page="./ExternalLogin" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form-horizontal">
-                        <div>
-                            <p>
-                                @foreach (var provider in Model.ExternalLogins!)
-                                {
-                                    <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                                }
-                            </p>
-                        </div>
-                    </form>
-                }
-            }
-        </section>
+
+    <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="space-y-6" novalidate>
+        <div asp-validation-summary="ModelOnly"
+             class="rounded-lg border border-rose-200 bg-rose-50 px-4 py-3 text-rose-900"
+             role="alert"></div>
+
+        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <h2 class="mb-4 text-lg font-semibold text-slate-900">Uppgifter</h2>
+
+            <div class="grid gap-4 md:grid-cols-2">
+                <div>
+                    <label asp-for="Input.FullName" class="mb-1 block text-sm font-medium text-slate-700"></label>
+                    <input asp-for="Input.FullName"
+                           class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 outline-none focus:border-[var(--rp-accent)] focus:ring-4 focus:ring-[var(--rp-accent)]/20"
+                           placeholder="För- och efternamn" />
+                    <span asp-validation-for="Input.FullName" class="mt-1 block text-sm text-rose-600"></span>
+                </div>
+
+                <div>
+                    <label asp-for="Input.Email" class="mb-1 block text-sm font-medium text-slate-700"></label>
+                    <input asp-for="Input.Email"
+                           class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 outline-none focus:border-[var(--rp-accent)] focus:ring-4 focus:ring-[var(--rp-accent)]/20"
+                           autocomplete="username"
+                           placeholder="namn@exempel.se" />
+                    <span asp-validation-for="Input.Email" class="mt-1 block text-sm text-rose-600"></span>
+                </div>
+
+                <div>
+                    <label asp-for="Input.PhoneNumber" class="mb-1 block text-sm font-medium text-slate-700"></label>
+                    <input asp-for="Input.PhoneNumber"
+                           class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 outline-none focus:border-[var(--rp-accent)] focus:ring-4 focus:ring-[var(--rp-accent)]/20"
+                           placeholder="+46 70 123 45 67" />
+                    <div class="mt-1 text-sm text-slate-500">Telefonnumret visas endast för behöriga kommun-användare.</div>
+                    <span asp-validation-for="Input.PhoneNumber" class="mt-1 block text-sm text-rose-600"></span>
+                </div>
+
+                <div>
+                    <label asp-for="Input.Password" class="mb-1 block text-sm font-medium text-slate-700"></label>
+                    <input asp-for="Input.Password"
+                           class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 outline-none focus:border-[var(--rp-accent)] focus:ring-4 focus:ring-[var(--rp-accent)]/20"
+                           autocomplete="new-password" />
+                    <div class="mt-1 text-sm text-slate-500">Minst 8 tecken och gärna specialtecken (t.ex. ! ? # %).</div>
+                    <span asp-validation-for="Input.Password" class="mt-1 block text-sm text-rose-600"></span>
+                </div>
+
+                <div>
+                    <label asp-for="Input.ConfirmPassword" class="mb-1 block text-sm font-medium text-slate-700"></label>
+                    <input asp-for="Input.ConfirmPassword"
+                           class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 outline-none focus:border-[var(--rp-accent)] focus:ring-4 focus:ring-[var(--rp-accent)]/20"
+                           autocomplete="new-password" />
+                    <span asp-validation-for="Input.ConfirmPassword" class="mt-1 block text-sm text-rose-600"></span>
+                </div>
+            </div>
+
+            <div class="my-6 h-px bg-slate-200"></div>
+
+            <h3 class="mb-3 text-sm font-semibold text-slate-900">Uppgifter (privatperson)</h3>
+
+            <div class="grid gap-4 md:grid-cols-3">
+                <div>
+                    <label asp-for="Input.Age" class="mb-1 block text-sm font-medium text-slate-700"></label>
+                    <input asp-for="Input.Age"
+                           class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 outline-none focus:border-[var(--rp-accent)] focus:ring-4 focus:ring-[var(--rp-accent)]/20"
+                           type="number" min="0" max="120" placeholder="t.ex. 32" />
+                    <span asp-validation-for="Input.Age" class="mt-1 block text-sm text-rose-600"></span>
+                </div>
+
+                <div>
+                    <label asp-for="Input.Gender" class="mb-1 block text-sm font-medium text-slate-700">Kön</label>
+                    <select asp-for="Input.Gender"
+                            class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-900 outline-none focus:border-[var(--rp-accent)] focus:ring-4 focus:ring-[var(--rp-accent)]/20">
+                        <option value="">Välj…</option>
+                        <option value="Kvinna">Kvinna</option>
+                        <option value="Man">Man</option>
+                        <option value="Icke-binär">Icke-binär</option>
+                        <option value="Vill ej ange">Vill ej ange</option>
+                    </select>
+                    <span asp-validation-for="Input.Gender" class="mt-1 block text-sm text-rose-600"></span>
+                </div>
+            </div>
+
+            <div class="my-6 h-px bg-slate-200"></div>
+
+            <h3 class="mb-3 text-sm font-semibold text-slate-900">Var vill du ta uppdrag?</h3>
+
+            <div class="grid gap-4 md:grid-cols-2 md:items-end">
+                <div>
+                    <label class="mb-1 block text-sm font-medium text-slate-700">Län</label>
+                    <select class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-900 outline-none focus:border-[var(--rp-accent)] focus:ring-4 focus:ring-[var(--rp-accent)]/20"
+                            id="countySelect">
+                        <option value="">Laddar län…</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="mb-1 block text-sm font-medium text-slate-700">Sök kommun</label>
+                    <input class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 outline-none disabled:cursor-not-allowed disabled:bg-slate-100"
+                           id="municipalitySearch"
+                           placeholder="Skriv för att filtrera…"
+                           disabled />
+                </div>
+            </div>
+
+            <div id="municipalityList"
+                 class="mt-3 max-h-64 overflow-auto rounded-xl border border-slate-200 bg-white p-3">
+                <div class="text-slate-500">Välj ett län för att se kommuner.</div>
+            </div>
+
+            <span asp-validation-for="Input.MunicipalityCodes" class="mt-2 block text-sm text-rose-600"></span>
+
+            <div class="mt-2 text-sm text-slate-500">
+                Klicka i alla kommuner du vill kunna ta uppdrag i. (Du kan välja i flera län.)
+            </div>
+
+            <div class="mt-4">
+                <h3 class="mb-2 text-sm font-semibold text-slate-900">Valda kommuner</h3>
+                <div id="selectedMunicipalities" class="rounded-xl border border-slate-200 bg-slate-50 p-3">
+                    <div class="text-slate-500">Inga valda kommuner ännu.</div>
+                </div>
+            </div>
+
+            <div class="my-6 h-px bg-slate-200"></div>
+
+            <h3 class="mb-3 text-sm font-semibold text-slate-900">Avdelning</h3>
+
+            <div class="grid gap-3 md:grid-cols-3">
+                <label class="flex items-center gap-2 rounded-xl border border-slate-200 bg-white p-3 hover:bg-slate-50">
+                    <input class="h-4 w-4 accent-[var(--rp-accent)]"
+                           type="checkbox"
+                           name="Input.Departments"
+                           value="LSS" />
+                    <span class="text-sm font-medium text-slate-800">LSS</span>
+                </label>
+
+                <label class="flex items-center gap-2 rounded-xl border border-slate-200 bg-white p-3 hover:bg-slate-50">
+                    <input class="h-4 w-4 accent-[var(--rp-accent)]"
+                           type="checkbox"
+                           name="Input.Departments"
+                           value="SoL" />
+                    <span class="text-sm font-medium text-slate-800">SoL</span>
+                </label>
+
+                <label class="flex items-center gap-2 rounded-xl border border-slate-200 bg-white p-3 hover:bg-slate-50">
+                    <input class="h-4 w-4 accent-[var(--rp-accent)]"
+                           type="checkbox"
+                           name="Input.Departments"
+                           value="Socialtjansten" />
+                    <span class="text-sm font-medium text-slate-800">Socialtjänsten</span>
+                </label>
+            </div>
+
+            <span asp-validation-for="Input.Departments" class="mt-2 block text-sm text-rose-600"></span>
+
+            <div class="my-6 h-px bg-slate-200"></div>
+
+            <div class="flex items-start gap-3">
+                <input asp-for="Input.AcceptGdpr"
+                       class="mt-1 h-4 w-4 accent-[var(--rp-accent)]"
+                       id="gdprCheck" />
+
+                <label class="text-sm text-slate-700" for="gdprCheck">
+                    Jag har läst och godkänner
+                    <button type="button"
+                            id="gdprOpenBtn"
+                            class="underline decoration-slate-300 hover:decoration-slate-500">
+                        GDPR-informationen
+                    </button>
+                    <span class="text-rose-600">*</span>
+                </label>
+            </div>
+            <span asp-validation-for="Input.AcceptGdpr" class="mt-1 block text-sm text-rose-600"></span>
+        </div>
+
+        <div class="flex flex-wrap gap-3">
+            <button id="registerSubmit"
+                    class="inline-flex items-center justify-center rounded-lg bg-[var(--rp-accent)] px-5 py-2 font-semibold text-white hover:opacity-95"
+                    type="submit">
+                Skapa konto
+            </button>
+
+            <a class="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-5 py-2 font-semibold text-slate-700 hover:bg-slate-50"
+               asp-area=""
+               asp-controller="Home"
+               asp-action="Index">
+                Avbryt
+            </a>
+        </div>
+
+        @if ((Model.ExternalLogins?.Count ?? 0) > 0)
+        {
+            <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+                <h3 class="text-lg font-semibold text-slate-900">Registrera med annan tjänst</h3>
+                <div class="mt-3 flex flex-wrap gap-2">
+                    @foreach (var provider in Model.ExternalLogins!)
+                    {
+                        <button type="submit"
+                                class="rounded-lg border border-slate-300 bg-white px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50"
+                                name="provider"
+                                value="@provider.Name"
+                                formaction="@Url.Page("./ExternalLogin", new { returnUrl = Model.ReturnUrl })"
+                                formmethod="post">
+                            @provider.DisplayName
+                        </button>
+                    }
+                </div>
+            </div>
+        }
+    </form>
+</div>
+<!-- GDPR Modal (Tailwind) -->
+<div id="gdprModal" class="hidden">
+    <!-- Overlay -->
+    <div data-modal-overlay class="fixed inset-0 bg-black/40"></div>
+
+    <!-- Panel -->
+    <div class="fixed inset-0 flex items-center justify-center p-4">
+        <div class="w-full max-w-3xl overflow-hidden rounded-2xl bg-white shadow-lg">
+            <div class="flex items-start justify-between gap-4 border-b border-slate-200 px-5 py-4">
+                <h2 class="text-lg font-semibold text-slate-900">GDPR-information</h2>
+
+                <button type="button"
+                        data-modal-close
+                        class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-50"
+                        aria-label="Stäng">
+                    ✕
+                </button>
+            </div>
+
+            <div class="max-h-[70vh] overflow-auto px-5 py-5">
+                <partial name="_GdprText" />
+            </div>
+
+            <div class="flex items-center justify-end gap-2 border-t border-slate-200 px-5 py-4">
+                <button type="button"
+                        data-modal-close
+                        class="rounded-lg bg-[var(--rp-accent)] px-4 py-2 font-semibold text-white hover:opacity-95">
+                    Stäng
+                </button>
+            </div>
+        </div>
     </div>
 </div>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        // GDPR modal (Tailwind) open/close
+        (function () {
+            const openBtn = document.getElementById("gdprOpenBtn");
+            const modal = document.getElementById("gdprModal");
+            if (!openBtn || !modal) return;
+
+            const overlay = modal.querySelector("[data-modal-overlay]");
+            const closeButtons = modal.querySelectorAll("[data-modal-close]");
+
+            function open() {
+                modal.classList.remove("hidden");
+                modal.classList.add("block");
+                document.documentElement.classList.add("overflow-hidden");
+            }
+
+            function close() {
+                modal.classList.add("hidden");
+                modal.classList.remove("block");
+                document.documentElement.classList.remove("overflow-hidden");
+            }
+
+            openBtn.addEventListener("click", open);
+            if (overlay) overlay.addEventListener("click", close);
+            closeButtons.forEach(btn => btn.addEventListener("click", close));
+
+            document.addEventListener("keydown", (e) => {
+                if (e.key === "Escape" && !modal.classList.contains("hidden")) close();
+            });
+        })();
+    </script>
+
+    <script>
+        // Counties + municipalities (SCB codes) + selected overview
+        (function () {
+            const countySelect = document.getElementById("countySelect");
+            const municipalityList = document.getElementById("municipalityList");
+            const municipalitySearch = document.getElementById("municipalitySearch");
+            const selectedBox = document.getElementById("selectedMunicipalities");
+
+            let dataset = null;
+            let currentMunicipalities = [];
+
+            // code -> { code, name }
+            const selected = new Map();
+
+            function renderSelectedBox() {
+                const items = Array.from(selected.values())
+                    .sort((a, b) => a.name.localeCompare(b.name, "sv"));
+
+                if (items.length === 0) {
+                    selectedBox.innerHTML = `<div class="text-slate-500">Inga valda kommuner ännu.</div>`;
+                    return;
+                }
+
+                selectedBox.innerHTML = items.map(x => `
+                    <span class="mr-2 mb-2 inline-flex items-center gap-2 rounded-full bg-slate-200 px-3 py-1 text-sm text-slate-800">
+                        <span>${x.name}</span>
+                        <button type="button"
+                                class="inline-flex h-5 w-5 items-center justify-center rounded-full bg-slate-300 text-xs font-bold text-slate-800 hover:bg-slate-400"
+                                data-remove="${x.code}"
+                                aria-label="Ta bort ${x.name}">
+                            ✕
+                        </button>
+                    </span>
+                `).join("");
+            }
+
+            selectedBox.addEventListener("click", (e) => {
+                const btn = e.target.closest("[data-remove]");
+                if (!btn) return;
+
+                const code = btn.getAttribute("data-remove");
+                selected.delete(code);
+
+                const cb = document.getElementById(`mun_${code}`);
+                if (cb) cb.checked = false;
+
+                renderSelectedBox();
+            });
+
+            function wireCheckboxEvents() {
+                municipalityList
+                    .querySelectorAll('input[type="checkbox"][name="Input.MunicipalityCodes"]')
+                    .forEach(cb => {
+                        cb.addEventListener("change", () => {
+                            const code = cb.value;
+                            const mun = currentMunicipalities.find(x => x.code === code);
+
+                            if (cb.checked) {
+                                selected.set(code, { code, name: mun?.name ?? code });
+                            } else {
+                                selected.delete(code);
+                            }
+
+                            renderSelectedBox();
+                        });
+                    });
+            }
+
+            function renderMunicipalities(items) {
+                municipalityList.innerHTML = "";
+
+                if (!items || items.length === 0) {
+                    municipalityList.innerHTML = `<div class="text-slate-500">Inga kommuner att visa.</div>`;
+                    return;
+                }
+
+                const sorted = [...items].sort((a, b) => a.name.localeCompare(b.name, "sv"));
+
+                municipalityList.innerHTML = sorted.map(m => {
+                    const id = `mun_${m.code}`;
+                    const checked = selected.has(m.code) ? "checked" : "";
+                    return `
+                        <label class="flex items-center gap-3 rounded-lg px-2 py-2 hover:bg-slate-50">
+                            <input class="h-4 w-4 accent-[var(--rp-accent)]"
+                                   type="checkbox"
+                                   name="Input.MunicipalityCodes"
+                                   value="${m.code}"
+                                   id="${id}" ${checked}>
+                            <span class="text-sm text-slate-800">${m.name}</span>
+                        </label>
+                    `;
+                }).join("");
+
+                wireCheckboxEvents();
+            }
+
+            function applySearchFilter() {
+                const q = (municipalitySearch.value || "").trim().toLowerCase();
+                if (!q) return renderMunicipalities(currentMunicipalities);
+
+                const filtered = currentMunicipalities.filter(m => m.name.toLowerCase().includes(q));
+                renderMunicipalities(filtered);
+            }
+
+            fetch("/data/sweden_counties_municipalities_2026.json")
+                .then(r => r.json())
+                .then(json => {
+                    dataset = json;
+
+                    const countiesSorted = [...json.counties].sort((a, b) => a.name.localeCompare(b.name, "sv"));
+
+                    countySelect.innerHTML = `<option value="">Välj län…</option>`;
+                    countiesSorted.forEach(c => {
+                        const opt = document.createElement("option");
+                        opt.value = c.code;
+                        opt.textContent = c.name;
+                        countySelect.appendChild(opt);
+                    });
+
+                    municipalitySearch.disabled = true;
+                    municipalitySearch.value = "";
+                    municipalityList.innerHTML = `<div class="text-slate-500">Välj ett län för att se kommuner.</div>`;
+                    renderSelectedBox();
+                })
+                .catch(() => {
+                    countySelect.innerHTML = `<option value="">Kunde inte ladda län/kommuner</option>`;
+                    municipalityList.innerHTML = `<div class="text-rose-700">Kunde inte ladda kommun-listan. Kontrollera JSON i wwwroot/data.</div>`;
+                });
+
+            countySelect.addEventListener("change", () => {
+                municipalitySearch.value = "";
+                const code = countySelect.value;
+
+                if (!dataset || !code) {
+                    municipalitySearch.disabled = true;
+                    municipalityList.innerHTML = `<div class="text-slate-500">Välj ett län för att se kommuner.</div>`;
+                    return;
+                }
+
+                const county = dataset.counties.find(c => c.code === code);
+                currentMunicipalities = county ? county.municipalities : [];
+                municipalitySearch.disabled = false;
+
+                renderMunicipalities(currentMunicipalities);
+            });
+
+            municipalitySearch.addEventListener("input", applySearchFilter);
+        })();
+    </script>
 }
