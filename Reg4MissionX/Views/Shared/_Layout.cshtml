@@ -93,11 +93,11 @@
             <div class="space-y-2">
                 @if (User?.Identity?.IsAuthenticated == true)
                 {
-                    <form asp-area="Identity" asp-page="/Account/Logout" method="post">
-                        <button type="submit"
-                                class="w-full rounded-lg bg-[var(--rp-accent)] px-3 py-2 text-center font-semibold text-white hover:opacity-95">
-                            Logga ut
-                        </button>
+                    <form asp-area="Identity"
+                          asp-page="/Account/Logout"
+                          asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })"
+                          method="post">
+                        <button type="submit">Logga ut</button>
                     </form>
                 }
                 else
