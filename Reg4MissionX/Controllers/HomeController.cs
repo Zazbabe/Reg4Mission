@@ -8,13 +8,9 @@ namespace Reg4MissionX.Controllers
 {
     public class HomeController : Controller
     {
-        // Existing: used for creating roles etc.
         private readonly RoleManager<IdentityRole> _roleManager;
-
-        // New: real Identity login
         private readonly SignInManager<ApplicationUser> _signInManager;
 
-        // Inject both
         public HomeController(
             RoleManager<IdentityRole> roleManager,
             SignInManager<ApplicationUser> signInManager)
@@ -26,26 +22,27 @@ namespace Reg4MissionX.Controllers
         [HttpGet]
         public IActionResult Index(string? returnUrl = null)
         {
-            // Show empty login model for the home login box
             var vm = new HomeLoginVm
             {
-                ReturnUrl = string.IsNullOrWhiteSpace(returnUrl) ? "/Dashboard" : returnUrl
+                ReturnUrl = string.IsNullOrWhiteSpace(returnUrl)
+                    ? "/Dashboard?loggedIn=1"
+                    : returnUrl
             };
 
             return View(vm);
         }
 
-        // POST: /Home/Login (from the login box on Home/Index)
+        // POST: /Home/Login
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(HomeLoginVm model)
         {
-            // Default fallback after login
-            var returnUrl = string.IsNullOrWhiteSpace(model.ReturnUrl) ? "/Dashboard" : model.ReturnUrl;
+            var returnUrl = string.IsNullOrWhiteSpace(model.ReturnUrl)
+                ? "/Dashboard?loggedIn=1"
+                : model.ReturnUrl;
 
             if (!ModelState.IsValid)
             {
-                // Show the same Index page again with validation messages
                 model.ReturnUrl = returnUrl;
                 return View("Index", model);
             }
