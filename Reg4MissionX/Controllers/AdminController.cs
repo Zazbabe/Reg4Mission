@@ -28,7 +28,7 @@ namespace Reg4MissionX.Controllers
         }
 
         //Get all roles från the database and add them to the variable allRoles. Get the roles for the user and add them to the variable userRoles.
-        // NOTE: role.Name is string? so we filter null/empty to avoid CS8619 warnings.
+        // NOTE: role.Name is string? so we filter null/empty to avoid CS8619 warnings. It is also its own function to prevent us from having to repeat the same code in multiple places.
         private List<string> GetAllRoles()
         {
             return _roleManager.Roles
@@ -161,3 +161,4 @@ namespace Reg4MissionX.Controllers
         }
     }
 }
+
