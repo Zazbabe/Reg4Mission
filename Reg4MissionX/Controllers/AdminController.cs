@@ -28,7 +28,7 @@ namespace Reg4MissionX.Controllers
         }
 
         //Get all roles från the database and add them to the variable allRoles. Get the roles for the user and add them to the variable userRoles.
-        // NOTE: role.Name is string? so we filter null/empty to avoid CS8619 warnings.
+        // NOTE: role.Name is string? so we filter null/empty to avoid CS8619 warnings. It is also its own function to prevent us from having to repeat the same code in multiple places.
         private List<string> GetAllRoles()
         {
             return _roleManager.Roles
@@ -111,10 +111,11 @@ namespace Reg4MissionX.Controllers
         public async Task<IActionResult> AddUserToRoles(ManageUserRolesVm model)
         {
             var currentUser = await _userManager.GetUserAsync(User);
-            var isCurrentUserSysAdmin = await _userManager.IsInRoleAsync(currentUser, "SysAdmin");
 
             if (currentUser == null)
                 return Forbid();
+
+            var isCurrentUserSysAdmin = await _userManager.IsInRoleAsync(currentUser, "SysAdmin");
 
             //Checks if the CurrentRoles property of the model is null and if it is, it initializes it as an empty list of strings.
             //This ensures that the code can safely work with the CurrentRoles property.
@@ -160,3 +161,4 @@ namespace Reg4MissionX.Controllers
         }
     }
 }
+
