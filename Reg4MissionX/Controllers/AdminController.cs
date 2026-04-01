@@ -27,6 +27,18 @@ namespace Reg4MissionX.Controllers
             return View();
         }
 
+        //Get all roles från the database and add them to the variable allRoles. Get the roles for the user and add them to the variable userRoles.
+        // NOTE: role.Name is string? so we filter null/empty to avoid CS8619 warnings.
+        private List<string> GetAllRoles()
+        {
+            return _roleManager.Roles
+                .Select(r => r.Name)
+                .Where(n => !string.IsNullOrWhiteSpace(n))
+                .Select(n => n!)
+                .OrderBy(n => n)
+                .ToList();
+        }
+
         //Action method to show all users and their roles
         [HttpGet]
         public async Task<IActionResult> GetRoles(string userId)
@@ -39,14 +51,7 @@ namespace Reg4MissionX.Controllers
             if (user == null)
                 return NotFound();
 
-            //Get all roles från the database and add them to the variable allRoles. Get the roles for the user and add them to the variable userRoles.
-            // NOTE: role.Name is string? so we filter null/empty to avoid CS8619 warnings.
-            var allRoles = _roleManager.Roles
-                .Select(role => role.Name)
-                .Where(name => !string.IsNullOrWhiteSpace(name))
-                .Select(name => name!) // now it's List<string>
-                .OrderBy(name => name)
-                .ToList();
+            var allRoles = GetAllRoles();
 
             var userRoles = await _userManager.GetRolesAsync(user);
 
@@ -105,23 +110,24 @@ namespace Reg4MissionX.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> AddUserToRoles(ManageUserRolesVm model)
         {
-            if (!ModelState.IsValid)
-            {
-                // Reload AvailableRoles so the view can render checkboxes again after validation errors.
-                model.AvailableRoles = _roleManager.Roles
-                    .Select(role => role.Name)
-                    .Where(name => !string.IsNullOrWhiteSpace(name))
-                    .Select(name => name!)
-                    .OrderBy(name => name)
-                    .ToList();
+            var currentUser = await _userManager.GetUserAsync(User);
+            var isCurrentUserSysAdmin = await _userManager.IsInRoleAsync(currentUser, "SysAdmin");
 
-                // Important: return the same view used by GetRoles
-                return View("GetRoles", model);
-            }
+            if (currentUser == null)
+                return Forbid();
 
             //Checks if the CurrentRoles property of the model is null and if it is, it initializes it as an empty list of strings.
             //This ensures that the code can safely work with the CurrentRoles property.
             model.CurrentRoles ??= new List<string>();
+
+            if (!ModelState.IsValid)
+            {
+                // Reload AvailableRoles so the view can render checkboxes again after validation errors.
+                model.AvailableRoles = GetAllRoles();
+
+                // Important: return the same view used by GetRoles
+                return View("GetRoles", model);
+            }
 
             //Finds the user by Id and adds the Id to the variable User
             var user = await _userManager.FindByIdAsync(model.UserId);
@@ -130,32 +136,18 @@ namespace Reg4MissionX.Controllers
                 return NotFound();
             }
 
-            //Get the current user Id and check if the user is a SysAdmin. Doesn't let the Admin add himself/herself to the SysAdmin-role
-            var currentUserId = _userManager.GetUserId(User);
-            var isSysAdmin = await _userManager.IsInRoleAsync(user, "SysAdmin");
-
-            if (model.UserId == currentUserId &&
-                model.CurrentRoles.Contains("SysAdmin") &&
-                !isSysAdmin)
-            {
-                ModelState.AddModelError("", "Du kan inte tilldela dig själv rollen SysAdmin.");
-
-                model.AvailableRoles = _roleManager.Roles
-                    .Select(role => role.Name)
-                    .Where(name => !string.IsNullOrWhiteSpace(name))
-                    .Select(name => name!)
-                    .OrderBy(name => name)
-                    .ToList();
-
-                return View("GetRoles", model);
-            }
-
             //An attribute to store the current roles of the user in the variable currentRoles. The first in the local and the second is from the model.
             var currentRoles = await _userManager.GetRolesAsync(user);
 
             //Attributes to store the roles to be added and removed.
             var rolesToAdd = model.CurrentRoles.Except(currentRoles);
             var rolesToRemove = currentRoles.Except(model.CurrentRoles);
+
+            //securitcheck to prevent non-SysAdmin users from assigning the "SysAdmin" role to themselves or others. If the current user is not a SysAdmin and is trying to assign the "SysAdmin" role, it adds a model error and returns the view with the model to show the error message.
+            if (rolesToAdd.Contains("SysAdmin") && !isCurrentUserSysAdmin)
+            {
+                return Forbid();
+            }
 
             //Add the user to the roles to be added and remove the user from the roles to be removed.
             await _userManager.AddToRolesAsync(user, rolesToAdd);
