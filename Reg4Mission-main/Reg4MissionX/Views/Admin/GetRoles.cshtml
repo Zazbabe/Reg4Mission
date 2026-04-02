@@ -1,0 +1,84 @@
+﻿@model Reg4MissionX.ViewModels.ManageUserRolesVm
+
+@{
+    ViewData["Title"] = "Hantera användarroller";
+}
+
+<div class="mx-auto max-w-5xl">
+    <div class="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+            <h1 class="text-3xl font-semibold text-slate-900">Hantera användarroller</h1>
+            <p class="mt-2 text-slate-600">Välj vilka roller användaren ska ha.</p>
+        </div>
+
+        <a class="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50"
+           asp-action="Index">
+            Tillbaka
+        </a>
+    </div>
+
+    @if (TempData["Success"] is string ok && !string.IsNullOrWhiteSpace(ok))
+    {
+        <div class="mb-4 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-emerald-900">
+            @ok
+        </div>
+    }
+
+    <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div class="mb-5 rounded-xl border border-slate-200 bg-slate-50 p-4">
+            <div class="text-sm text-slate-600">Användare</div>
+            <div class="mt-1 font-semibold text-slate-900">@Model.UserEmail</div>
+            <div class="mt-1 text-sm text-slate-500">@Model.UserId</div>
+        </div>
+
+        <form asp-action="AddUserToRoles" method="post" class="space-y-4">
+            @Html.AntiForgeryToken()
+
+            <input type="hidden" asp-for="UserId" />
+            <input type="hidden" asp-for="UserEmail" />
+
+            <div>
+                <div class="mb-2 text-sm font-semibold text-slate-900">Roller</div>
+
+                @* English comment: If there are no roles, show a helpful message *@
+                @if (Model.AvailableRoles == null || !Model.AvailableRoles.Any())
+                {
+                    <div class="text-slate-600">
+                        Inga roller finns ännu. Skapa roller först.
+                    </div>
+                }
+                else
+                {
+                    <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                        @foreach (var role in Model.AvailableRoles)
+                        {
+                            var isChecked = Model.CurrentRoles != null && Model.CurrentRoles.Contains(role);
+
+                            <label class="flex items-center gap-3 rounded-xl border border-slate-200 bg-white p-3 hover:bg-slate-50">
+                                <input class="h-4 w-4 accent-[var(--rp-accent)]"
+                                       type="checkbox"
+                                       name="CurrentRoles"
+                                       value="@role"
+                                       @(isChecked ? "checked" : "") />
+                                <span class="text-sm font-medium text-slate-800">@role</span>
+                            </label>
+                        }
+                    </div>
+                }
+
+                <span asp-validation-for="CurrentRoles" class="mt-2 block text-sm text-rose-600"></span>
+            </div>
+
+            <div class="pt-2">
+                <button class="inline-flex items-center justify-center rounded-lg bg-[var(--rp-accent)] px-5 py-2 font-semibold text-white hover:opacity-95"
+                        type="submit">
+                    Spara
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

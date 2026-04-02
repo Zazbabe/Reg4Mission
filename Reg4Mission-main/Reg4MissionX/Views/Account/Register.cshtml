@@ -1,0 +1,550 @@
+﻿@model Reg4MissionX.ViewModels.RegisterVm
+
+@{
+    ViewData["Title"] = "Registrera";
+}
+
+<div class="mx-auto max-w-3xl">
+    <div class="mb-6">
+        <h1 class="text-3xl font-semibold text-slate-900">Registrera</h1>
+        <p class="mt-2 text-slate-600">Skapa konto som privatperson.</p>
+    </div>
+
+    <form method="post" class="space-y-6" novalidate>
+        <!-- This will become useful when backend validation is connected -->
+        <div asp-validation-summary="ModelOnly"
+             class="rounded-lg border border-rose-200 bg-rose-50 px-4 py-3 text-rose-900"
+             role="alert"></div>
+
+        <!-- Card -->
+        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <h2 class="mb-4 text-lg font-semibold text-slate-900">Uppgifter</h2>
+
+            <!-- Basic info -->
+            <div class="grid gap-4 md:grid-cols-2">
+                <div>
+                    <label asp-for="FullName" class="mb-1 block text-sm font-medium text-slate-700"></label>
+                    <input asp-for="FullName"
+                           class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 outline-none focus:border-[var(--rp-accent)] focus:ring-4 focus:ring-[var(--rp-accent)]/20"
+                           placeholder="För- och efternamn" />
+                    <span asp-validation-for="FullName" class="mt-1 block text-sm text-rose-600"></span>
+                </div>
+
+                <div>
+                    <label asp-for="Email" class="mb-1 block text-sm font-medium text-slate-700"></label>
+                    <input asp-for="Email"
+                           class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 outline-none focus:border-[var(--rp-accent)] focus:ring-4 focus:ring-[var(--rp-accent)]/20"
+                           placeholder="namn@exempel.se" />
+                    <span asp-validation-for="Email" class="mt-1 block text-sm text-rose-600"></span>
+                </div>
+
+                <div>
+                    <label asp-for="PhoneNumber" class="mb-1 block text-sm font-medium text-slate-700"></label>
+                    <input asp-for="PhoneNumber"
+                           class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 outline-none focus:border-[var(--rp-accent)] focus:ring-4 focus:ring-[var(--rp-accent)]/20"
+                           placeholder="+46 70 123 45 67" />
+                    <div class="mt-1 text-sm text-slate-500">Telefonnumret visas endast för behöriga kommun-användare.</div>
+                    <span asp-validation-for="PhoneNumber" class="mt-1 block text-sm text-rose-600"></span>
+                </div>
+
+                <div>
+                    <label asp-for="Password" class="mb-1 block text-sm font-medium text-slate-700"></label>
+                    <input asp-for="Password"
+                           class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 outline-none focus:border-[var(--rp-accent)] focus:ring-4 focus:ring-[var(--rp-accent)]/20"
+                           autocomplete="new-password" />
+                    <div class="mt-1 text-sm text-slate-500">Minst 8 tecken och minst 1 specialtecken (t.ex. ! ? # %).</div>
+                    <span asp-validation-for="Password" class="mt-1 block text-sm text-rose-600"></span>
+                </div>
+
+                <div class="md:col-span-1">
+                    <label asp-for="ConfirmPassword" class="mb-1 block text-sm font-medium text-slate-700"></label>
+                    <input asp-for="ConfirmPassword"
+                           class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 outline-none focus:border-[var(--rp-accent)] focus:ring-4 focus:ring-[var(--rp-accent)]/20"
+                           autocomplete="new-password" />
+                    <span asp-validation-for="ConfirmPassword" class="mt-1 block text-sm text-rose-600"></span>
+                </div>
+            </div>
+
+            <div class="my-6 h-px bg-slate-200"></div>
+
+            <!-- Private person fields -->
+            <h3 class="mb-3 text-sm font-semibold text-slate-900">Uppgifter (privatperson)</h3>
+
+            <div class="grid gap-4 md:grid-cols-3">
+                <div>
+                    <label asp-for="Age" class="mb-1 block text-sm font-medium text-slate-700"></label>
+                    <input asp-for="Age"
+                           class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 outline-none focus:border-[var(--rp-accent)] focus:ring-4 focus:ring-[var(--rp-accent)]/20"
+                           type="number" min="0" max="120" placeholder="t.ex. 32" />
+                    <span asp-validation-for="Age" class="mt-1 block text-sm text-rose-600"></span>
+                </div>
+
+                <div>
+                    <label asp-for="Gender" class="mb-1 block text-sm font-medium text-slate-700"></label>
+                    <select asp-for="Gender"
+                            class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-900 outline-none focus:border-[var(--rp-accent)] focus:ring-4 focus:ring-[var(--rp-accent)]/20">
+                        <option value="">Välj…</option>
+                        <option value="Kvinna">Kvinna</option>
+                        <option value="Man">Man</option>
+                        <option value="Icke-binär">Icke-binär</option>
+                        <option value="Vill ej ange">Vill ej ange</option>
+                    </select>
+                    <span asp-validation-for="Gender" class="mt-1 block text-sm text-rose-600"></span>
+                </div>
+            </div>
+
+            <div class="my-6 h-px bg-slate-200"></div>
+
+            <!-- Where to take assignments -->
+            <h3 class="mb-3 text-sm font-semibold text-slate-900">Var vill du ta uppdrag?</h3>
+
+            <div class="grid gap-4 md:grid-cols-2 md:items-end">
+                <div>
+                    <label asp-for="CountyCode" class="mb-1 block text-sm font-medium text-slate-700"></label>
+                    <select asp-for="CountyCode"
+                            class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-900 outline-none focus:border-[var(--rp-accent)] focus:ring-4 focus:ring-[var(--rp-accent)]/20"
+                            id="countySelect">
+                        <option value="">Laddar län…</option>
+                    </select>
+                    <span asp-validation-for="CountyCode" class="mt-1 block text-sm text-rose-600"></span>
+                </div>
+
+                <div>
+                    <label class="mb-1 block text-sm font-medium text-slate-700">Sök kommun</label>
+                    <input class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 outline-none disabled:cursor-not-allowed disabled:bg-slate-100"
+                           id="municipalitySearch"
+                           placeholder="Skriv för att filtrera…"
+                           disabled />
+                </div>
+            </div>
+
+            <div id="municipalityList"
+                 class="mt-3 max-h-64 overflow-auto rounded-xl border border-slate-200 bg-white p-3">
+                <div class="text-slate-500">Välj ett län för att se kommuner.</div>
+            </div>
+
+            <!-- Validation error for the list (MunicipalityCodes) -->
+            <span asp-validation-for="MunicipalityCodes" class="mt-2 block text-sm text-rose-600"></span>
+
+            <div class="mt-2 text-sm text-slate-500">
+                Klicka i alla kommuner du vill kunna ta uppdrag i. (Du kan välja i flera län.)
+            </div>
+
+            <!-- Selected municipalities overview -->
+            <div class="mt-4">
+                <h3 class="mb-2 text-sm font-semibold text-slate-900">Valda kommuner</h3>
+                <div id="selectedMunicipalities" class="rounded-xl border border-slate-200 bg-slate-50 p-3">
+                    <div class="text-slate-500">Inga valda kommuner ännu.</div>
+                </div>
+            </div>
+
+            <div class="my-6 h-px bg-slate-200"></div>
+
+            <!-- Departments -->
+            <h3 class="mb-3 text-sm font-semibold text-slate-900">Avdelning</h3>
+
+            <div class="grid gap-3 md:grid-cols-3">
+                <label class="flex items-center gap-2 rounded-xl border border-slate-200 bg-white p-3 hover:bg-slate-50">
+                    <input class="h-4 w-4 accent-[var(--rp-accent)]"
+                           type="checkbox"
+                           name="Departments"
+                           value="LSS"
+                           @(Model?.Departments?.Contains("LSS") == true ? "checked" : "") />
+                    <span class="text-sm font-medium text-slate-800">LSS</span>
+                </label>
+
+                <label class="flex items-center gap-2 rounded-xl border border-slate-200 bg-white p-3 hover:bg-slate-50">
+                    <input class="h-4 w-4 accent-[var(--rp-accent)]"
+                           type="checkbox"
+                           name="Departments"
+                           value="SoL"
+                           @(Model?.Departments?.Contains("SoL") == true ? "checked" : "") />
+                    <span class="text-sm font-medium text-slate-800">SoL</span>
+                </label>
+
+                <label class="flex items-center gap-2 rounded-xl border border-slate-200 bg-white p-3 hover:bg-slate-50">
+                    <input class="h-4 w-4 accent-[var(--rp-accent)]"
+                           type="checkbox"
+                           name="Departments"
+                           value="Socialtjansten"
+                           @(Model?.Departments?.Contains("Socialtjansten") == true ? "checked" : "") />
+                    <span class="text-sm font-medium text-slate-800">Socialtjänsten</span>
+                </label>
+            </div>
+
+            <span asp-validation-for="Departments" class="mt-2 block text-sm text-rose-600"></span>
+
+            <div class="my-6 h-px bg-slate-200"></div>
+
+            <!-- GDPR acceptance -->
+            <div class="flex items-start gap-3">
+                <input asp-for="AcceptGdpr"
+                       class="mt-1 h-4 w-4 accent-[var(--rp-accent)]"
+                       id="gdprCheck" />
+
+                <label class="text-sm text-slate-700" for="gdprCheck">
+                    Jag har läst och godkänner
+                    <button type="button"
+                            id="gdprOpenBtn"
+                            class="underline decoration-slate-300 hover:decoration-slate-500">
+                        GDPR-informationen
+                    </button>
+                    <span class="text-rose-600">*</span>
+                </label>
+            </div>
+            <span asp-validation-for="AcceptGdpr" class="mt-1 block text-sm text-rose-600"></span>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex flex-wrap gap-3">
+            <button class="inline-flex items-center justify-center rounded-lg bg-[var(--rp-accent)] px-5 py-2 font-semibold text-white hover:opacity-95"
+                    type="submit">
+                Skapa konto
+            </button>
+
+            <a class="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-5 py-2 font-semibold text-slate-700 hover:bg-slate-50"
+               asp-controller="Home" asp-action="Index">
+                Avbryt
+            </a>
+        </div>
+    </form>
+</div>
+
+<!-- GDPR Modal (Tailwind) -->
+<div id="gdprModal" class="hidden">
+    <!-- Overlay -->
+    <div data-modal-overlay class="fixed inset-0 bg-black/40"></div>
+
+    <!-- Panel -->
+    <div class="fixed inset-0 flex items-center justify-center p-4">
+        <div class="w-full max-w-3xl overflow-hidden rounded-2xl bg-white shadow-lg">
+            <div class="flex items-start justify-between gap-4 border-b border-slate-200 px-5 py-4">
+                <h2 class="text-lg font-semibold text-slate-900">GDPR-information</h2>
+
+                <button type="button"
+                        data-modal-close
+                        class="inline-flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 text-slate-700 hover:bg-slate-50"
+                        aria-label="Stäng">
+                    ✕
+                </button>
+            </div>
+
+            <div class="max-h-[70vh] overflow-auto px-5 py-5">
+                <p class="text-slate-600">
+                    
+                    
+    
+    <h2>GDPR – Behandling av personuppgifter i Resursportalen</h2>
+
+
+    <h1>GDPR – Behandling av personuppgifter i Resursportalen</h1>
+
+    <h2>1. Personuppgiftsansvarig</h2>
+    <p>
+        Resursportalen är personuppgiftsansvarig för behandlingen av personuppgifter i systemet.
+    </p>
+
+    <h2>2. Vilka uppgifter behandlar vi?</h2>
+    <p>Vi behandlar följande personuppgifter:</p>
+    <ul>
+        <li>Namn</li>
+        <li>E-postadress</li>
+        <li>Användarroll</li>
+        <li>Profilinformation som användaren själv registrerar</li>
+        <li>Loggdata (t.ex. när kontaktuppgifter visas)</li>
+    </ul>
+
+    <h2>3. Ändamål</h2>
+    <p>Personuppgifter behandlas för att:</p>
+    <ul>
+        <li>Skapa och hantera användarkonton</li>
+        <li>Möjliggöra matchning mellan kandidater och uppdrag</li>
+        <li>Ge kommunanvändare tillgång till relevanta profiler</li>
+        <li>Logga visning av kontaktuppgifter för säkerhet och spårbarhet</li>
+        <li>Administrera roller och behörigheter</li>
+    </ul>
+
+    <h2>4. Rättslig grund</h2>
+    <p>Behandlingen sker med stöd av:</p>
+    <ul>
+        <li>Avtal (när användare registrerar konto)</li>
+        <li>Berättigat intresse (för att säkerställa systemets funktion och säkerhet)</li>
+    </ul>
+
+    <h2>5. Lagringstid</h2>
+    <p>
+        Personuppgifter sparas så länge användarkontot är aktivt eller så länge det krävs för att uppfylla ändamålet med behandlingen.
+    </p>
+
+    <h2>6. Åtkomst och säkerhet</h2>
+    <p>
+        Endast behöriga användare har tillgång till personuppgifter enligt rollbaserad behörighet.
+        Resursportalen använder tekniska och organisatoriska säkerhetsåtgärder för att skydda uppgifterna.
+    </p>
+
+    <h2>7. Dina rättigheter</h2>
+    <p>Du har rätt att:</p>
+    <ul>
+        <li>Begära registerutdrag</li>
+        <li>Begära rättelse</li>
+        <li>Begära radering</li>
+        <li>Invända mot behandling</li>
+        <li>Lämna klagomål till IMY (Integritetsskyddsmyndigheten)</li>
+    </ul>
+
+    <h2>8. Kontakt</h2>
+    <p>
+        För frågor om personuppgifter, kontakta:<br>
+        [vår epostadress som vi kommer att ha]
+    </p>
+
+
+               
+
+                <div class="my-4 h-px bg-slate-200"></div>
+
+                <ul class="list-disc space-y-2 pl-5 text-slate-700">
+                    <li>Ändamål: matcha uppdragstagare med kommuner</li>
+                    <li>Uppgifter: namn, mail, telefon, kommunval, avdelning</li>
+                    <li>Åtkomst: kommuner med inloggning kan se kontaktuppgifter</li>
+                    <li>Rättigheter: export och radering</li>
+                </ul>
+            </div>
+
+            <div class="flex items-center justify-end gap-2 border-t border-slate-200 px-5 py-4">
+                <button type="button"
+                        data-modal-close
+                        class="rounded-lg bg-[var(--rp-accent)] px-4 py-2 font-semibold text-white hover:opacity-95">
+                    Stäng
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        // Basic client-side password match check (UI-only)
+        (function () {
+            const form = document.querySelector("form");
+            if (!form) return;
+
+            form.addEventListener("submit", (event) => {
+                const pwd = document.getElementById("Password");
+                const cpwd = document.getElementById("ConfirmPassword");
+
+                if (pwd && cpwd && pwd.value !== cpwd.value) {
+                    cpwd.setCustomValidity("Lösenorden matchar inte");
+                } else if (cpwd) {
+                    cpwd.setCustomValidity("");
+                }
+
+                if (!form.checkValidity()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+            }, false);
+        })();
+
+        // GDPR modal (Tailwind) open/close
+        (function () {
+            const openBtn = document.getElementById("gdprOpenBtn");
+            const modal = document.getElementById("gdprModal");
+            if (!openBtn || !modal) return;
+
+            const overlay = modal.querySelector("[data-modal-overlay]");
+            const closeButtons = modal.querySelectorAll("[data-modal-close]");
+
+            function open() {
+                modal.classList.remove("hidden");
+                modal.classList.add("block");
+                document.documentElement.classList.add("overflow-hidden");
+            }
+
+            function close() {
+                modal.classList.add("hidden");
+                modal.classList.remove("block");
+                document.documentElement.classList.remove("overflow-hidden");
+            }
+
+            openBtn.addEventListener("click", open);
+            if (overlay) overlay.addEventListener("click", close);
+            closeButtons.forEach(btn => btn.addEventListener("click", close));
+
+            document.addEventListener("keydown", (e) => {
+                if (e.key === "Escape" && !modal.classList.contains("hidden")) close();
+            });
+        })();
+
+        // Counties + alphabetic sorting + "Selected municipalities" overview
+        (function () {
+            const countySelect = document.getElementById("countySelect");
+            const municipalityList = document.getElementById("municipalityList");
+            const municipalitySearch = document.getElementById("municipalitySearch");
+            const selectedBox = document.getElementById("selectedMunicipalities");
+
+            let dataset = null;
+            let currentMunicipalities = [];
+
+            // Stores selections across multiple counties: code -> { code, name, countyCode, countyName }
+            const selected = new Map();
+
+            function sortByName(a, b) {
+                return a.name.localeCompare(b.name, "sv");
+            }
+
+            function renderSelectedBox() {
+                const items = Array.from(selected.values())
+                    .sort((a, b) => a.name.localeCompare(b.name, "sv"));
+
+                if (items.length === 0) {
+                    selectedBox.innerHTML = `<div class="text-slate-500">Inga valda kommuner ännu.</div>`;
+                    return;
+                }
+
+                selectedBox.innerHTML = items.map(x => `
+                    <span class="mr-2 mb-2 inline-flex items-center gap-2 rounded-full bg-slate-200 px-3 py-1 text-sm text-slate-800">
+                        <span>${x.name}</span>
+                        <button type="button"
+                                class="inline-flex h-5 w-5 items-center justify-center rounded-full bg-slate-300 text-xs font-bold text-slate-800 hover:bg-slate-400"
+                                data-remove="${x.code}"
+                                aria-label="Ta bort ${x.name}">
+                            ✕
+                        </button>
+                    </span>
+                `).join("");
+            }
+
+            selectedBox.addEventListener("click", (e) => {
+                const btn = e.target.closest("[data-remove]");
+                if (!btn) return;
+
+                const code = btn.getAttribute("data-remove");
+                selected.delete(code);
+
+                // If the checkbox is currently visible, uncheck it too
+                const cb = document.getElementById(`mun_${code}`);
+                if (cb) cb.checked = false;
+
+                renderSelectedBox();
+            });
+
+            function wireCheckboxEvents() {
+                municipalityList
+                    .querySelectorAll('input[type="checkbox"][name="MunicipalityCodes"]')
+                    .forEach(cb => {
+                        cb.addEventListener("change", () => {
+                            const code = cb.value;
+                            const mun = currentMunicipalities.find(x => x.code === code);
+
+                            if (cb.checked) {
+                                const county = dataset?.counties?.find(c => c.code === countySelect.value);
+                                selected.set(code, {
+                                    code,
+                                    name: mun?.name ?? code,
+                                    countyCode: county?.code ?? "",
+                                    countyName: county?.name ?? ""
+                                });
+                            } else {
+                                selected.delete(code);
+                            }
+
+                            renderSelectedBox();
+                        });
+                    });
+            }
+
+            function renderMunicipalities(items) {
+                municipalityList.innerHTML = "";
+
+                if (!items || items.length === 0) {
+                    municipalityList.innerHTML = `<div class="text-slate-500">Inga kommuner att visa.</div>`;
+                    return;
+                }
+
+                const fragment = document.createDocumentFragment();
+                const sorted = [...items].sort(sortByName);
+
+                sorted.forEach(m => {
+                    const id = `mun_${m.code}`;
+                    const row = document.createElement("label");
+                    row.className = "flex items-center gap-3 rounded-lg px-2 py-2 hover:bg-slate-50";
+
+                    const checked = selected.has(m.code) ? "checked" : "";
+
+                    row.innerHTML = `
+                        <input class="h-4 w-4 accent-[var(--rp-accent)]"
+                               type="checkbox"
+                               name="MunicipalityCodes"
+                               value="${m.code}"
+                               id="${id}" ${checked}>
+                        <span class="text-sm text-slate-800">${m.name}</span>
+                    `;
+
+                    fragment.appendChild(row);
+                });
+
+                municipalityList.appendChild(fragment);
+                wireCheckboxEvents();
+            }
+
+            function applySearchFilter() {
+                const q = (municipalitySearch.value || "").trim().toLowerCase();
+                if (!q) {
+                    renderMunicipalities(currentMunicipalities);
+                    return;
+                }
+
+                const filtered = currentMunicipalities.filter(m => m.name.toLowerCase().includes(q));
+                renderMunicipalities(filtered);
+            }
+
+            fetch("/data/sweden_counties_municipalities_2026.json")
+                .then(r => r.json())
+                .then(json => {
+                    dataset = json;
+
+                    // Sort counties alphabetically (Swedish locale)
+                    const countiesSorted = [...json.counties].sort((a, b) => a.name.localeCompare(b.name, "sv"));
+
+                    countySelect.innerHTML = `<option value="">Välj län…</option>`;
+                    countiesSorted.forEach(c => {
+                        const opt = document.createElement("option");
+                        opt.value = c.code;
+                        opt.textContent = c.name;
+                        countySelect.appendChild(opt);
+                    });
+
+                    municipalitySearch.disabled = true;
+                    municipalitySearch.value = "";
+                    municipalityList.innerHTML = `<div class="text-slate-500">Välj ett län för att se kommuner.</div>`;
+                    renderSelectedBox();
+                })
+                .catch(() => {
+                    countySelect.innerHTML = `<option value="">Kunde inte ladda län/kommuner</option>`;
+                    municipalityList.innerHTML = `<div class="text-rose-700">Kunde inte ladda kommun-listan. Kontrollera JSON i wwwroot/data.</div>`;
+                });
+
+            countySelect.addEventListener("change", () => {
+                municipalitySearch.value = "";
+                const code = countySelect.value;
+
+                if (!dataset || !code) {
+                    municipalitySearch.disabled = true;
+                    municipalityList.innerHTML = `<div class="text-slate-500">Välj ett län för att se kommuner.</div>`;
+                    return;
+                }
+
+                const county = dataset.counties.find(c => c.code === code);
+                currentMunicipalities = county ? county.municipalities : [];
+                municipalitySearch.disabled = false;
+
+                renderMunicipalities(currentMunicipalities);
+            });
+
+            municipalitySearch.addEventListener("input", applySearchFilter);
+        })();
+    </script>
+}

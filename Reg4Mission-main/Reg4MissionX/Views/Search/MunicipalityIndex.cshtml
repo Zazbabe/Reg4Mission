@@ -1,0 +1,150 @@
+﻿@{
+    ViewData["Title"] = "Sök";
+}
+
+<div data-requires-auth="true" class="grid gap-6 lg:grid-cols-12">
+    <!-- Filters -->
+    <aside class="lg:col-span-4 xl:col-span-3">
+        <div class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+            <h2 class="mb-4 text-lg font-semibold text-slate-900">Filtrera kandidater</h2>
+
+            <form class="space-y-4">
+                <div>
+                    <label class="mb-1 block text-sm font-medium text-slate-700">Roll</label>
+                    <input class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 outline-none focus:border-[var(--rp-accent)] focus:ring-4 focus:ring-[var(--rp-accent)]/20"
+                           placeholder="t.ex. Kontaktperson" />
+                </div>
+
+                <div>
+                    <label class="mb-1 block text-sm font-medium text-slate-700">Ort</label>
+                    <input class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 outline-none focus:border-[var(--rp-accent)] focus:ring-4 focus:ring-[var(--rp-accent)]/20"
+                           placeholder="t.ex. Uppsala" />
+                </div>
+
+                <div>
+                    <label class="mb-1 block text-sm font-medium text-slate-700">Intressen</label>
+                    <input class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 outline-none focus:border-[var(--rp-accent)] focus:ring-4 focus:ring-[var(--rp-accent)]/20"
+                           placeholder="t.ex. Film" />
+                </div>
+
+                <div>
+                    <label class="mb-1 block text-sm font-medium text-slate-700">Tillgänglighet</label>
+                    <select class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-900 outline-none focus:border-[var(--rp-accent)] focus:ring-4 focus:ring-[var(--rp-accent)]/20">
+                        <option selected>Valfri</option>
+                        <option>Omgående</option>
+                        <option>2 veckor</option>
+                        <option>1 månad</option>
+                    </select>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2 pt-1">
+                    <button type="button"
+                            class="inline-flex w-full items-center justify-center rounded-lg bg-[var(--rp-accent)] px-4 py-2 font-semibold text-white hover:opacity-95">
+                        Sök
+                    </button>
+
+                    <button type="button"
+                            class="inline-flex w-full items-center justify-center rounded-lg border border-slate-300 bg-white px-4 py-2 font-semibold text-slate-700 hover:bg-slate-50">
+                        Rensa
+                    </button>
+                </div>
+            </form>
+        </div>
+    </aside>
+
+    <!-- Results -->
+    <section class="lg:col-span-8 xl:col-span-9">
+        <div class="rounded-2xl border border-slate-200 bg-white shadow-sm">
+            <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 px-5 py-4">
+                <h2 class="text-lg font-semibold text-slate-900">Resultat</h2>
+                <div class="text-sm text-slate-500">UI-only demo data</div>
+            </div>
+
+            <div class="overflow-x-auto">
+                <table class="min-w-full text-left text-sm">
+                    <thead class="bg-slate-50 text-slate-700">
+                        <tr>
+                            <th class="px-5 py-3 font-semibold">Namn</th>
+                            <th class="px-5 py-3 font-semibold">Roll</th>
+                            <th class="px-5 py-3 font-semibold">Ort</th>
+                            <th class="px-5 py-3 font-semibold">Tillgänglighet</th>
+                            <th class="px-5 py-3 text-right font-semibold">Åtgärd</th>
+                        </tr>
+                    </thead>
+
+                    <tbody class="divide-y divide-slate-200">
+                        <tr class="hover:bg-slate-50">
+                            <td class="px-5 py-4">
+                                <div class="font-semibold text-slate-900">Alex Andersson</div>
+                                <div class="mt-1 text-xs text-slate-500">Äldreomsorg, Frimärken</div>
+                            </td>
+                            <td class="px-5 py-4 text-slate-700">Ledsagare</td>
+                            <td class="px-5 py-4 text-slate-700">Uppsala</td>
+                            <td class="px-5 py-4">
+                                <span class="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-700">
+                                    Omgående
+                                </span>
+                            </td>
+                            <td class="px-5 py-4 text-right">
+                                <button class="js-view-profile inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                                        type="button"
+                                        data-candidate-id="1">
+                                    Se profil
+                                </button>
+                            </td>
+                        </tr>
+
+                        <tr class="hover:bg-slate-50">
+                            <td class="px-5 py-4">
+                                <div class="font-semibold text-slate-900">Sam Nilsson</div>
+                                <div class="mt-1 text-xs text-slate-500">Pizza, Bio, Pussel</div>
+                            </td>
+                            <td class="px-5 py-4 text-slate-700">Kontaktperson</td>
+                            <td class="px-5 py-4 text-slate-700">Örebro</td>
+                            <td class="px-5 py-4">
+                                <span class="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-700">
+                                    2 veckor
+                                </span>
+                            </td>
+                            <td class="px-5 py-4 text-right">
+                                <button class="js-view-profile inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                                        type="button"
+                                        data-candidate-id="2">
+                                    Se profil
+                                </button>
+                            </td>
+                        </tr>
+
+                        <tr class="hover:bg-slate-50">
+                            <td class="px-5 py-4">
+                                <div class="font-semibold text-slate-900">Kim Svensson</div>
+                                <div class="mt-1 text-xs text-slate-500">Matematik, Film</div>
+                            </td>
+                            <td class="px-5 py-4 text-slate-700">Kontaktperson</td>
+                            <td class="px-5 py-4 text-slate-700">Västerås</td>
+                            <td class="px-5 py-4">
+                                <span class="inline-flex items-center rounded-full bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-700">
+                                    1 månad
+                                </span>
+                            </td>
+                            <td class="px-5 py-4 text-right">
+                                <button class="js-view-profile inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-3 py-1.5 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                                        type="button"
+                                        data-candidate-id="3">
+                                    Se profil
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Modal host (your municipality-search.js can inject here) -->
+        <div id="modalHost" class="mt-4"></div>
+    </section>
+</div>
+
+@section Scripts {
+    <script src="~/js/municipality-search.js" asp-append-version="true"></script>
+}

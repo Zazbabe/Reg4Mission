@@ -1,0 +1,156 @@
+﻿@model Reg4MissionX.ViewModels.ProfileEditVm
+@{
+    ViewData["Title"] = "Redigera profil";
+}
+
+<div class="mx-auto max-w-5xl">
+    <div class="mb-6">
+        <h1 class="text-3xl font-semibold text-slate-900">Redigera profil</h1>
+        <p class="mt-1 text-slate-600">Uppdatera dina uppgifter och välj vilka kommuner du vill jobba mot.</p>
+    </div>
+
+    <form asp-action="Edit" method="post" class="grid gap-6">
+        @Html.AntiForgeryToken()
+
+        <!-- Card: Basic user info -->
+        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <h2 class="text-lg font-semibold text-slate-900">Grunduppgifter</h2>
+
+            <div class="mt-4 grid gap-4 md:grid-cols-12">
+                <div class="md:col-span-6">
+                    <label asp-for="FullName" class="mb-1 block text-sm font-medium text-slate-700"></label>
+                    <input asp-for="FullName"
+                           class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 outline-none focus:border-[var(--rp-accent)] focus:ring-4 focus:ring-[var(--rp-accent)]/20" />
+                    <span asp-validation-for="FullName" class="mt-1 block text-sm text-red-600"></span>
+                </div>
+
+                <div class="md:col-span-6">
+                    <label asp-for="Email" class="mb-1 block text-sm font-medium text-slate-700"></label>
+                    <input asp-for="Email"
+                           class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 outline-none focus:border-[var(--rp-accent)] focus:ring-4 focus:ring-[var(--rp-accent)]/20" />
+                    <span asp-validation-for="Email" class="mt-1 block text-sm text-red-600"></span>
+                </div>
+
+                <div class="md:col-span-6">
+                    <label asp-for="PhoneNumber" class="mb-1 block text-sm font-medium text-slate-700"></label>
+                    <input asp-for="PhoneNumber"
+                           class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 outline-none focus:border-[var(--rp-accent)] focus:ring-4 focus:ring-[var(--rp-accent)]/20" />
+                    <span asp-validation-for="PhoneNumber" class="mt-1 block text-sm text-red-600"></span>
+                </div>
+
+                <div class="md:col-span-3">
+                    <label asp-for="Age" class="mb-1 block text-sm font-medium text-slate-700"></label>
+                    <input asp-for="Age" type="number" min="0" max="120"
+                           class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 outline-none focus:border-[var(--rp-accent)] focus:ring-4 focus:ring-[var(--rp-accent)]/20" />
+                    <span asp-validation-for="Age" class="mt-1 block text-sm text-red-600"></span>
+                </div>
+
+                <div class="md:col-span-3">
+                    <label asp-for="Gender" class="mb-1 block text-sm font-medium text-slate-700"></label>
+                    <select asp-for="Gender"
+                            class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-900 outline-none focus:border-[var(--rp-accent)] focus:ring-4 focus:ring-[var(--rp-accent)]/20">
+                        <option value="">Välj…</option>
+                        <option>Kvinna</option>
+                        <option>Man</option>
+                        <option>Icke-binär</option>
+                        <option>Vill ej ange</option>
+                    </select>
+                    <span asp-validation-for="Gender" class="mt-1 block text-sm text-red-600"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card: Departments -->
+        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <h2 class="text-lg font-semibold text-slate-900">Jag kan ta uppdrag inom</h2>
+
+            <div class="mt-4 grid gap-3 sm:grid-cols-3">
+                <label class="flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">
+                    <input asp-for="DeptLss" class="h-4 w-4" />
+                    <span class="text-sm font-medium text-slate-800">LSS</span>
+                </label>
+
+                <label class="flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">
+                    <input asp-for="DeptSol" class="h-4 w-4" />
+                    <span class="text-sm font-medium text-slate-800">SoL</span>
+                </label>
+
+                <label class="flex items-center gap-2 rounded-lg border border-slate-200 bg-slate-50 px-3 py-2">
+                    <input asp-for="DeptSocialtjansten" class="h-4 w-4" />
+                    <span class="text-sm font-medium text-slate-800">Socialtjänsten</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Card: Township (registration-style box with search + scroll) -->
+        <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <div class="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between">
+                <h2 class="text-lg font-semibold text-slate-900">Kommuner</h2>
+                <span class="text-sm text-slate-600">Välj en eller flera</span>
+            </div>
+
+            <div class="mt-4">
+                <label for="munSearch" class="mb-1 block text-sm font-medium text-slate-700">Sök kommun</label>
+                <input id="munSearch"
+                       type="text"
+                       placeholder="Skriv för att filtrera…"
+                       class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 outline-none focus:border-[var(--rp-accent)] focus:ring-4 focus:ring-[var(--rp-accent)]/20" />
+                <p class="mt-2 text-sm text-slate-500">
+                    // Jag visar alla kommuner men gör listan scrollbar + sökbar så den inte tar över hela sidan.
+                </p>
+            </div>
+
+            <div id="munList"
+                 class="mt-4 max-h-72 overflow-auto rounded-xl border border-slate-200 bg-slate-50 p-3">
+                <div class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                    @for (int i = 0; i < Model.MunicipalityOptions.Count; i++)
+                    {
+                        <label class="mun-item flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2">
+                            <input type="checkbox"
+                                   name="SelectedMunicipalityIds"
+                                   value="@Model.MunicipalityOptions[i].Id"
+                                   @(Model.MunicipalityOptions[i].IsChecked ? "checked" : "")
+                                   class="h-4 w-4" />
+                            <span class="mun-name text-sm text-slate-800">@Model.MunicipalityOptions[i].Name</span>
+                        </label>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex flex-wrap items-center gap-3">
+            <button type="submit"
+                    class="inline-flex items-center justify-center rounded-lg bg-[var(--rp-accent)] px-5 py-2 font-semibold text-white hover:opacity-95 focus:outline-none focus:ring-4 focus:ring-[var(--rp-accent)]/20">
+                Spara
+            </button>
+
+            <a asp-action="Index"
+               class="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-5 py-2 font-semibold text-slate-700 hover:bg-slate-50 focus:outline-none focus:ring-4 focus:ring-slate-200">
+                Avbryt
+            </a>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        (function () {
+            const input = document.getElementById("munSearch");
+            const list = document.getElementById("munList");
+            if (!input || !list) return;
+
+            input.addEventListener("input", () => {
+                const q = (input.value || "").toLowerCase().trim();
+                const items = list.querySelectorAll(".mun-item");
+
+                items.forEach(item => {
+                    const name = (item.querySelector(".mun-name")?.textContent || "").toLowerCase();
+                    item.style.display = name.includes(q) ? "" : "none";
+                });
+            });
+        })();
+    </script>
+}

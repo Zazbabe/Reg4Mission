@@ -1,0 +1,45 @@
+﻿@{
+    ViewData["Title"] = "Sök";
+}
+
+<div data-requires-auth="true">
+    <div class="mb-6">
+        <h1 class="text-3xl font-semibold text-slate-900">Sök efter kandidater</h1>
+        <p class="mt-2 text-slate-600">Välj kommun och uppdrag för att filtrera kandidater. *</p>
+    </div>
+
+    <form class="grid gap-4 md:grid-cols-2">
+        <div>
+            <label class="mb-1 block text-sm font-medium text-slate-700">Kommun</label>
+            <select class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-900 outline-none focus:border-[var(--rp-accent)] focus:ring-4 focus:ring-[var(--rp-accent)]/20">
+                <option selected>Gör ett val</option>
+                <option>Stockholm</option>
+                <option>Göteborg</option>
+                <option>Malmö</option>
+            </select>
+        </div>
+
+        <div>
+            <label class="mb-1 block text-sm font-medium text-slate-700">Uppdrag</label>
+            <select class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-slate-900 outline-none focus:border-[var(--rp-accent)] focus:ring-4 focus:ring-[var(--rp-accent)]/20">
+                <option selected>Gör ett val</option>
+                <option>Kontaktperson</option>
+                <option>Ledsagare</option>
+                <option>Avlösare</option>
+            </select>
+        </div>
+
+        <div class="md:col-span-2">
+            <button type="button"
+                    class="inline-flex items-center justify-center rounded-lg bg-[var(--rp-accent)] px-5 py-2 font-semibold text-white hover:opacity-95">
+                Sök
+            </button>
+        </div>
+    </form>
+
+    <div class="my-6 h-px bg-slate-200"></div>
+
+    <div class="rounded-xl border border-dashed border-slate-300 bg-white p-6 text-slate-600">
+        Resultat visas här.
+    </div>
+</div>
